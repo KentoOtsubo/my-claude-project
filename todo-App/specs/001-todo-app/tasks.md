@@ -118,7 +118,8 @@
 - [ ] T026 [P] `css/styles.css` にローディングインジケーター・エラーUI表示スタイル・レスポンシブ対応（モバイル幅での横スクロールなし・SC-004）・長タイトルの省略表示（`overflow: hidden; text-overflow: ellipsis; white-space: nowrap`）スタイルを追加する
 - [ ] T027 `js/app.js` に sql.js 初期化失敗時のエラーUI表示ロジックとローディングインジケーターの表示/非表示制御を実装する（`DB.init()` の try-catch・失敗時に `init-error` を表示・成功時に `loading` を非表示にして UI を表示・FR-008 に関連）
 - [ ] T028 `js/app.js` にグローバルキーボード操作を実装する（`document` の `keydown` イベントで Esc キー押下時に `state.activeModal` に応じて `closeModal()` を呼び出す・モーダルオープン時に入力フィールドへ確実に `focus()` を付与する・FR-011 全操作のキーボード対応）
-- [ ] T029 `quickstart.md` の動作確認チェックリスト（7項目）に従って全ユーザーストーリーのすべての受け入れシナリオをブラウザで手動テストし、問題がないことを確認する
+- [ ] T029 [P] `js/app.js` のチェックボックス `change` イベントハンドラ（T014）に連打防止ガードを追加する（`DB.toggleTaskCompletion()` 呼び出し中はチェックボックスに `disabled` 属性を付与し、`renderTasks()` 再描画完了後に解除する。spec.md エッジケース「完了状態を素早く連打した場合」対応）
+- [ ] T030 `quickstart.md` の動作確認チェックリスト（7項目）に従って全ユーザーストーリーのすべての受け入れシナリオをブラウザで手動テストし、問題がないことを確認する（SC-007: 各CRUD操作が DevTools で 100ms 未満であることも確認する）
 
 ---
 
