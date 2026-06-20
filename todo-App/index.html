@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo管理アプリ</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="loading" class="loading-overlay">
+    <p class="loading-text">読み込み中...</p>
+  </div>
+
+  <div id="init-error" class="init-error" hidden>
+    <p class="init-error-message">アプリの初期化に失敗しました。ページを再読み込みしてください。</p>
+    <button class="btn-primary" onclick="location.reload()">再読み込み</button>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <header class="header">
+      <h1 class="header-title">ToDo</h1>
+      <button id="btn-create" class="btn-create">新規作成</button>
+    </header>
+    <main class="main">
+      <p id="empty-state" class="empty-state" hidden>タスクがありません。「新規作成」ボタンでタスクを追加してください。</p>
+      <ul id="task-list" class="task-list"></ul>
+    </main>
+  </div>
+
+  <!-- 新規作成モーダル -->
+  <div id="create-modal" class="modal-overlay" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
+      <h2 id="create-modal-title" class="modal-title">新規タスク作成</h2>
+      <div class="modal-body">
+        <label for="create-title-input" class="input-label">タイトル</label>
+        <input id="create-title-input" type="text" class="modal-input" placeholder="タスクのタイトルを入力" autocomplete="off">
+        <p id="create-error" class="error-message" hidden></p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel-create" class="btn-secondary">キャンセル</button>
+        <button id="btn-submit-create" class="btn-primary">作成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編集モーダル -->
+  <div id="edit-modal" class="modal-overlay" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+      <h2 id="edit-modal-title" class="modal-title">タスクを編集</h2>
+      <div class="modal-body">
+        <label for="edit-title-input" class="input-label">タイトル</label>
+        <input id="edit-title-input" type="text" class="modal-input" placeholder="タスクのタイトルを入力" autocomplete="off">
+        <p id="edit-error" class="error-message" hidden></p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel-edit" class="btn-secondary">キャンセル</button>
+        <button id="btn-save-edit" class="btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 削除確認ダイアログ -->
+  <div id="confirm-dialog" class="modal-overlay" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
+      <h2 id="confirm-dialog-title" class="modal-title">タスクを削除</h2>
+      <div class="modal-body">
+        <p class="confirm-message">このタスクを削除しますか？この操作は元に戻せません。</p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel-delete" class="btn-secondary">キャンセル</button>
+        <button id="btn-confirm-delete" class="btn-danger">削除する</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
