@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-tests-on-change.ps1\"",
+            "timeout": 120,
+            "statusMessage": "TDD自動実行: vitest実行中..."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.sqlite
+*.db
+npm-debug.log*
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
