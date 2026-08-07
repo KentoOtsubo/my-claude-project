@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>習慣トラッカー</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <h1>習慣トラッカー</h1>
+
+    <section>
+      <h2>習慣を登録</h2>
+      <form id="habit-form">
+        <label>
+          名前
+          <input type="text" id="habit-name" required maxlength="100" />
+        </label>
+
+        <label>
+          頻度
+          <select id="habit-frequency-type">
+            <option value="daily">毎日</option>
+            <option value="weekly">毎週</option>
+          </select>
+        </label>
+
+        <fieldset id="habit-weekly-days" hidden>
+          <legend>曜日（毎週の場合）</legend>
+          <label><input type="checkbox" value="0" />日</label>
+          <label><input type="checkbox" value="1" />月</label>
+          <label><input type="checkbox" value="2" />火</label>
+          <label><input type="checkbox" value="3" />水</label>
+          <label><input type="checkbox" value="4" />木</label>
+          <label><input type="checkbox" value="5" />金</label>
+          <label><input type="checkbox" value="6" />土</label>
+        </fieldset>
+
+        <label>
+          カテゴリ
+          <select id="habit-category">
+            <option value="uncategorized">未分類</option>
+            <option value="health">健康</option>
+            <option value="work">仕事</option>
+            <option value="study">学習</option>
+            <option value="other">その他</option>
+          </select>
+        </label>
+
+        <button type="submit" id="habit-form-submit">登録</button>
+        <button type="button" id="habit-form-cancel" hidden>編集をキャンセル</button>
+      </form>
+      <p id="habit-form-error" role="alert"></p>
+    </section>
+
+    <section>
+      <h2>習慣一覧</h2>
+      <label>
+        カテゴリで絞り込み
+        <select id="habit-category-filter">
+          <option value="">すべて</option>
+          <option value="uncategorized">未分類</option>
+          <option value="health">健康</option>
+          <option value="work">仕事</option>
+          <option value="study">学習</option>
+          <option value="other">その他</option>
+        </select>
+      </label>
+      <ul id="habit-list"></ul>
+      <p id="habit-list-empty" hidden>登録されている習慣がありません</p>
+    </section>
+
+    <script type="module" src="/js/habits.js"></script>
+  </body>
+</html>

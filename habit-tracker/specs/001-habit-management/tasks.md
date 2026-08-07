@@ -33,9 +33,9 @@ quickstart.md（すべて利用可能）
 
 **Purpose**: 本機能の実装に必要なディレクトリ構成を用意する
 
-- [ ] T001 [P] `src/domain/`, `src/repositories/`, `src/routes/` ディレクトリを作成する
+- [X] T001 [P] `src/domain/`, `src/repositories/`, `src/routes/` ディレクトリを作成する
   （`plan.md`のProject Structureに従う）
-- [ ] T002 [P] `public/css/`, `public/js/` ディレクトリを作成する
+- [X] T002 [P] `public/css/`, `public/js/` ディレクトリを作成する
 
 ---
 
@@ -45,10 +45,10 @@ quickstart.md（すべて利用可能）
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
-- [ ] T003 `src/repositories/db.ts` に `node:sqlite` の `DatabaseSync` 接続と `habits`
+- [X] T003 `src/repositories/db.ts` に `node:sqlite` の `DatabaseSync` 接続と `habits`
   テーブルのスキーマ初期化（`CREATE TABLE IF NOT EXISTS`）を実装する。ファイルパス・
   `:memory:` の両方を受け付けられるようにする（`data-model.md`のSQLスキーマ参照）。
-- [ ] T004 [P] `src/app.ts` に `express.static("public")` ミドルウェアを追加し、
+- [X] T004 [P] `src/app.ts` に `express.static("public")` ミドルウェアを追加し、
   `public/` 配下の静的ファイルを配信できるようにする。
 
 **Checkpoint**: 基盤完了。ユーザーストーリーの実装を開始できる。
@@ -66,22 +66,22 @@ quickstart.md（すべて利用可能）
 
 > **NOTE: これらのテストを先に作成し、失敗することを確認してから実装する**
 
-- [ ] T005 [P] [US1] `tests/unit/domain/habit.test.ts` に、頻度・カテゴリのデフォルト値
+- [X] T005 [P] [US1] `tests/unit/domain/habit.test.ts` に、頻度・カテゴリのデフォルト値
   適用と検証ロジック（FR-002〜FR-006）のユニットテストを作成する。
-- [ ] T006 [P] [US1] `tests/integration/habits.test.ts` に、`POST /api/habits` の登録
+- [X] T006 [P] [US1] `tests/integration/habits.test.ts` に、`POST /api/habits` の登録
   成功・名前必須エラー・デフォルト値適用（spec.md Acceptance Scenario 1-3）と
   `GET /api/habits`（フィルタなし一覧）の統合テストを作成する。
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] `src/domain/habit.ts` に、頻度・カテゴリのデフォルト値適用と検証ロジック
+- [X] T007 [US1] `src/domain/habit.ts` に、頻度・カテゴリのデフォルト値適用と検証ロジック
   （`validateAndNormalizeHabitInput`等）を実装し、T005のテストをパスさせる。
-- [ ] T008 [US1] `src/repositories/habitRepository.ts` に `create()` と `findAll()` を
+- [X] T008 [US1] `src/repositories/habitRepository.ts` に `create()` と `findAll()` を
   実装する（T003の`db.ts`を使用）。
-- [ ] T009 [US1] `src/routes/habits.ts` に `POST /api/habits` と `GET /api/habits`
+- [X] T009 [US1] `src/routes/habits.ts` に `POST /api/habits` と `GET /api/habits`
   （フィルタなし、`contracts/habits-api.md`参照）を実装し、`src/app.ts` にルーターを
   マウントする。T006のテストをパスさせる。
-- [ ] T010 [US1] `public/index.html` と `public/js/habits.js` に、習慣登録フォームと
+- [X] T010 [US1] `public/index.html` と `public/js/habits.js` に、習慣登録フォームと
   一覧表示のUIを実装する（`quickstart.md`手順2参照）。
 
 **Checkpoint**: User Story 1が単独で完全に動作・テスト可能（MVP）。
@@ -97,20 +97,20 @@ quickstart.md（すべて利用可能）
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T011 [P] [US2] `tests/integration/habits.test.ts` に、`PUT /api/habits/:id`
+- [X] T011 [P] [US2] `tests/integration/habits.test.ts` に、`PUT /api/habits/:id`
   （更新成功・存在しないID時404）と `DELETE /api/habits/:id`（削除成功・存在しないID時
   404）の統合テストを追加する（spec.md Acceptance Scenario 2-5）。
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] `src/repositories/habitRepository.ts` に `findById()`・`update()`・
+- [X] T012 [US2] `src/repositories/habitRepository.ts` に `findById()`・`update()`・
   `delete()` を実装する。`update()`は既存レコードと送信フィールドをマージしたうえで
   `src/domain/habit.ts`の検証ロジックを再適用する（`data-model.md`「部分更新（PUT）時の
   マージ方針」参照）。
-- [ ] T013 [US2] `src/routes/habits.ts` に `PUT /api/habits/:id` と
+- [X] T013 [US2] `src/routes/habits.ts` に `PUT /api/habits/:id` と
   `DELETE /api/habits/:id` を実装し、存在しないIDの場合404を返す（FR-012）。T011の
   テストをパスさせる。
-- [ ] T014 [US2] `public/js/habits.js` と `public/index.html` に、編集フォームと削除
+- [X] T014 [US2] `public/js/habits.js` と `public/index.html` に、編集フォームと削除
   確認ダイアログのUI（FR-011）を追加する。
 
 **Checkpoint**: User Story 1・2がともに単独で動作する。
@@ -127,18 +127,18 @@ quickstart.md（すべて利用可能）
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T015 [P] [US3] `tests/integration/habits.test.ts` に、
+- [X] T015 [P] [US3] `tests/integration/habits.test.ts` に、
   `GET /api/habits?category=...` の絞り込み動作と絞り込み解除（spec.md Acceptance
   Scenario 1-2）の統合テストを追加する。
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] `src/repositories/habitRepository.ts` の `findAll()` に `category`
+- [X] T016 [US3] `src/repositories/habitRepository.ts` の `findAll()` に `category`
   フィルタ引数を追加する。
-- [ ] T017 [US3] `src/routes/habits.ts` の `GET /api/habits` に `category` クエリ
+- [X] T017 [US3] `src/routes/habits.ts` の `GET /api/habits` に `category` クエリ
   パラメータの処理を追加し、不正な値の場合400を返す（FR-008）。T015のテストをパス
   させる。
-- [ ] T018 [US3] `public/js/habits.js` と `public/index.html` に、カテゴリ絞り込みUI
+- [X] T018 [US3] `public/js/habits.js` と `public/index.html` に、カテゴリ絞り込みUI
   （セレクトボックス等）を追加する。
 
 **Checkpoint**: すべてのユーザーストーリーが独立に動作する。
@@ -149,10 +149,10 @@ quickstart.md（すべて利用可能）
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T019 [P] `public/css/styles.css` に登録フォーム・一覧・絞り込みUIの見た目を整える。
-- [ ] T020 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特に削除確認ダイア
+- [X] T019 [P] `public/css/styles.css` に登録フォーム・一覧・絞り込みUIの見た目を整える。
+- [X] T020 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特に削除確認ダイア
   ログの表示・キャンセル動作（FR-011, SC-004）を含めて確認する。
-- [ ] T021 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
+- [X] T021 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
   確認する。
 
 ---

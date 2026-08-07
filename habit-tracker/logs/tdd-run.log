@@ -1,0 +1,81 @@
+===== 2026-08-07 19:57:08 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\db.ts =====
+===== 2026-08-07 19:57:22 | changed: c:\workspace\my-claude-project\habit-tracker\src\app.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 31[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 19:57:23
+[2m   Duration [22m 902ms[2m (transform 45ms, setup 0ms, collect 350ms, tests 31ms, environment 0ms, prepare 152ms)[22m
+
+
+
+===== 2026-08-07 19:58:12 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\habits.test.ts =====
+===== 2026-08-07 20:01:22 | changed: c:\workspace\my-claude-project\habit-tracker\src\domain\habit.ts =====
+===== 2026-08-07 20:01:38 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\habitRepository.ts =====
+===== 2026-08-07 20:01:50 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\habits.ts =====
+===== 2026-08-07 20:02:01 | changed: c:\workspace\my-claude-project\habit-tracker\src\app.ts =====
+===== 2026-08-07 20:02:09 | changed: c:\workspace\my-claude-project\habit-tracker\src\server.ts =====
+===== 2026-08-07 20:05:55 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\db.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 35[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 81[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m   Start at [22m 20:05:56
+[2m   Duration [22m 1.04s[2m (transform 132ms, setup 0ms, collect 852ms, tests 122ms, environment 1ms, prepare 570ms)[22m
+
+
+
+===== 2026-08-07 20:07:48 | changed: C:\workspace\my-claude-project\habit-tracker\tests\integration\habits.test.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 28[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 137[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m21 passed[39m[22m[90m (21)[39m
+[2m   Start at [22m 20:07:49
+[2m   Duration [22m 1.23s[2m (transform 158ms, setup 0ms, collect 1.00s, tests 173ms, environment 1ms, prepare 512ms)[22m
+
+
+
+===== 2026-08-07 20:09:41 | changed: C:\workspace\my-claude-project\habit-tracker\tests\integration\habits.test.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m11 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 31[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 172[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m24 passed[39m[22m[90m (24)[39m
+[2m   Start at [22m 20:09:42
+[2m   Duration [22m 1.33s[2m (transform 126ms, setup 0ms, collect 995ms, tests 211ms, environment 1ms, prepare 578ms)[22m
+
+
+
