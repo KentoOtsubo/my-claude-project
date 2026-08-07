@@ -23,6 +23,14 @@ spec.md「Key Entities」の習慣（Habit）を実装レベルのフィール�
 5. `category`が省略された場合は`"uncategorized"`を設定する（FR-006）。
 6. `category`が定義済みの5値以外の場合はエラー。
 
+### 部分更新（PUT）時のマージ方針
+
+`PUT /api/habits/:id`で一部フィールドのみ送信された場合、リポジトリ層は既存レコードの値と
+送信されたフィールドをマージした完全なオブジェクトを構築し、その上で上記の検証ルール
+（1〜6）を再適用する。例えば`frequencyType`のみ`"weekly"`に変更し`weeklyDays`を省略した
+場合、既存の`weeklyDays`をそのまま用いて検証する（既存が空配列であれば検証ルール3により
+エラーとなる）。
+
 ### ライフサイクル・状態遷移
 
 [Clarifications](./spec.md#clarifications)で確定した通り、習慣に中間状態（アーカイブ等）は

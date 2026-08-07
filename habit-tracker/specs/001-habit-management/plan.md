@@ -42,7 +42,7 @@
 
 | 原則 | 判定 | 根拠 |
 |---|---|---|
-| I. テスト駆動開発（NON-NEGOTIABLE） | PASS | `/speckit-tasks`で各ユーザーストーリーに「Tests for User Story N」を実タスクとして生成し、`src/domain/`のドメインロジックを中心にテストを先に書く。既存のPostToolUseフックによる自動テスト実行はそのまま利用する。 |
+| I. テスト駆動開発（NON-NEGOTIABLE） | PASS（フロントエンドUIは例外） | API・ドメインロジック（`src/domain/`, `src/routes/`, `src/repositories/`）は`/speckit-tasks`で「Tests for User Story N」を実タスクとして生成し、テストを先に書く。フロントエンドUI（`public/`）はDOMテストツール未導入のため自動テスト対象外とし、`quickstart.md`の手動検証（T020）で保証する（spec.md参照）。既存のPostToolUseフックによる自動テスト実行はそのまま利用する。 |
 | II. 仕様駆動ワークフローの遵守 | PASS | `/speckit-constitution` → `/speckit-specify` → `/speckit-clarify` → `/speckit-plan`の順で実施済み。機能順序も`001-habit-management`から開始しており計画通り。 |
 | III. ドメイン中心アーキテクチャ | PASS | 頻度・カテゴリの検証とデフォルト値適用ロジックを`src/domain/habit.ts`に副作用のない純粋関数として実装し、`src/repositories/`（`node:sqlite`）・`src/routes/`から分離する。 |
 | IV. ドキュメントは日本語で記述 | PASS | 本plan.md、および後続のresearch.md/data-model.md/quickstart.md/tasks.mdはすべて日本語で記述する。 |
