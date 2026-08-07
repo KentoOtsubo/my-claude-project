@@ -9,3 +9,6 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# エビデンスとして別提出するレポート（Artifactで管理、gitには含めない）
+docs/q1-q2-comparison-report.md
