@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-checkin-tracking`
 
-**Created**: 2026-08-07
+**Created**: 2026-08-16
 
 **Status**: Draft
 
@@ -10,7 +10,7 @@
 
 ## Clarifications
 
-### Session 2026-08-07
+### Session 2026-08-16
 
 - Q: 習慣の頻度（毎日/毎週）を後から変更した場合、既存のチェックイン履歴に基づく
   ストリーク計算はどう扱うか？ → A: 常に習慣の現在の頻度設定を基準に、既存の
