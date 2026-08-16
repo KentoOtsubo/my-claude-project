@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import type { Express } from "express";
 import { createApp } from "../../src/app.js";
@@ -8,6 +8,10 @@ describe("/api/habits", () => {
 
   beforeEach(() => {
     app = createApp({ dbPath: ":memory:" });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe("POST /api/habits", () => {
@@ -134,6 +138,33 @@ describe("/api/habits", () => {
     it("不正なカテゴリ値の場合は400を返す (FR-008)", async () => {
       const res = await request(app).get("/api/habits?category=invalid");
       expect(res.status).toBe(400);
+    });
+  });
+
+  describe("GET /api/habits (currentStreak)", () => {
+    it("チェックインが0件の場合はcurrentStreakが0になる", async () => {
+      await request(app).post("/api/habits").send({ name: "読書" });
+
+      const res = await request(app).get("/api/habits");
+
+      expect(res.body[0].currentStreak).toBe(0);
+    });
+
+    it("連続してチェックインしている場合はcurrentStreakに反映される (Acceptance Scenario 1, US2)", async () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-08-14T00:00:00.000Z"));
+      const created = await request(app).post("/api/habits").send({ name: "読書" });
+      await request(app).post(`/api/habits/${created.body.id}/checkins`).send({});
+
+      vi.setSystemTime(new Date("2026-08-15T00:00:00.000Z"));
+      await request(app).post(`/api/habits/${created.body.id}/checkins`).send({});
+
+      vi.setSystemTime(new Date("2026-08-16T00:00:00.000Z"));
+      await request(app).post(`/api/habits/${created.body.id}/checkins`).send({});
+
+      const res = await request(app).get("/api/habits");
+
+      expect(res.body[0].currentStreak).toBe(3);
     });
   });
 });

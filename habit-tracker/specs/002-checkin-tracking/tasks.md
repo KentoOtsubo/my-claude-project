@@ -35,7 +35,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 **Purpose**: 本機能に必要な依存関係の確認（`001`の環境をそのまま利用するため、新規
 インストールは想定していない）
 
-- [ ] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する
+- [X] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する
   （`node:sqlite`・`crypto`はNode.js組み込みのため追加インストール不要）
 
 ---
@@ -46,7 +46,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
-- [ ] T002 `src/repositories/db.ts` を拡張し、接続初期化時に `PRAGMA foreign_keys = ON;`
+- [X] T002 `src/repositories/db.ts` を拡張し、接続初期化時に `PRAGMA foreign_keys = ON;`
   を実行するとともに、`checkins` テーブルのスキーマ初期化（`CREATE TABLE IF NOT
   EXISTS`、`UNIQUE(habit_id, date)`、`habit_id` への `ON DELETE CASCADE` 外部キー）を
   追加する（`data-model.md`のSQLスキーマ参照）。
@@ -66,10 +66,10 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 > **NOTE: これらのテストを先に作成し、失敗することを確認してから実装する**
 
-- [ ] T003 [P] [US1] `tests/unit/domain/checkin.test.ts` に、チェックインの検証ロジック
+- [X] T003 [P] [US1] `tests/unit/domain/checkin.test.ts` に、チェックインの検証ロジック
   （日付デフォルト適用、未来日エラー、習慣の作成日より前エラー、重複エラー:
   FR-002〜FR-005）のユニットテストを作成する。
-- [ ] T004 [P] [US1] `tests/integration/checkins.test.ts` に、
+- [X] T004 [P] [US1] `tests/integration/checkins.test.ts` に、
   `POST /api/habits/:habitId/checkins` の登録成功・重複エラー・作成日より前エラー・
   存在しない習慣IDエラー（spec.md Acceptance Scenario 1-3, FR-013）に加え、習慣を
   削除すると紐づくチェックインも連鎖削除されること（`001`の`DELETE /api/habits/:id`
@@ -78,15 +78,15 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] `src/domain/checkin.ts` に、チェックインの検証ロジック（日付デフォルト・
+- [X] T005 [US1] `src/domain/checkin.ts` に、チェックインの検証ロジック（日付デフォルト・
   未来日・作成日より前・重複判定）を実装し、T003のテストをパスさせる。
-- [ ] T006 [US1] `src/repositories/checkinRepository.ts` に `create()` と
+- [X] T006 [US1] `src/repositories/checkinRepository.ts` に `create()` と
   `findByHabitId()`（`date`の降順）を実装する（T002の`db.ts`を使用）。
-- [ ] T007 [US1] `src/routes/checkins.ts` に `POST /api/habits/:habitId/checkins` と
+- [X] T007 [US1] `src/routes/checkins.ts` に `POST /api/habits/:habitId/checkins` と
   `GET /api/habits/:habitId/checkins`（`contracts/checkins-api.md`参照）を実装し、
   `src/app.ts` にルーターをマウントする。存在しない習慣IDの場合404を返す。T004の
   テストをパスさせる。
-- [ ] T008 [US1] `public/index.html` と `public/js/habits.js` に、習慣一覧の各行へ
+- [X] T008 [US1] `public/index.html` と `public/js/habits.js` に、習慣一覧の各行へ
   チェックインボタンと「本日チェックイン済み」表示を追加する（`GET .../checkins`の
   結果から当日分の有無をフロントエンドで判定する）。
 
@@ -103,23 +103,23 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T009 [P] [US2] `tests/unit/domain/streak.test.ts` に、頻度「毎日」「毎週」それぞれの
+- [X] T009 [P] [US2] `tests/unit/domain/streak.test.ts` に、頻度「毎日」「毎週」それぞれの
   ストリーク計算ロジック（当日未チェックインの保留、途切れによるリセット、対象外曜日の
   スキップ、習慣の作成日境界、頻度変更時の再計算: FR-008〜FR-011, FR-015）のユニット
   テストを作成する。
-- [ ] T010 [P] [US2] `tests/integration/habits.test.ts` に、`GET /api/habits`の
+- [X] T010 [P] [US2] `tests/integration/habits.test.ts` に、`GET /api/habits`の
   レスポンスに `currentStreak` が正しく含まれること（spec.md Acceptance Scenario 1,
   3-4）の統合テストを追加する。
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] `src/domain/streak.ts` に、習慣の頻度・チェックイン日付集合・今日の
+- [X] T011 [US2] `src/domain/streak.ts` に、習慣の頻度・チェックイン日付集合・今日の
   日付から現在のストリークを計算する純粋関数を実装し、T009のテストをパスさせる
   （`research.md`「2. ストリーク計算アルゴリズム」参照）。
-- [ ] T012 [US2] `src/routes/habits.ts` のGETハンドラ（一覧・カテゴリ絞り込み）を
+- [X] T012 [US2] `src/routes/habits.ts` のGETハンドラ（一覧・カテゴリ絞り込み）を
   拡張し、`checkinRepository.findByHabitId()` と `streak.ts` を用いて各習慣に
   `currentStreak` を付加する。T010のテストをパスさせる。
-- [ ] T013 [US2] `public/js/habits.js` と `public/index.html` に、習慣一覧の各行へ
+- [X] T013 [US2] `public/js/habits.js` と `public/index.html` に、習慣一覧の各行へ
   現在のストリーク（継続日数）を表示するUIを追加する。
 
 **Checkpoint**: User Story 1・2がともに単独で動作する。
@@ -136,7 +136,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T014 [P] [US3] `tests/integration/checkins.test.ts` に、
+- [X] T014 [P] [US3] `tests/integration/checkins.test.ts` に、
   `GET /api/habits/:habitId/checkins` の履歴が日付の新しい順に返ること、
   `DELETE /api/habits/:habitId/checkins/:checkinId` の取り消し成功・存在しない
   習慣ID/チェックインID時404（spec.md Acceptance Scenario 1-4, FR-006, FR-013）の
@@ -144,11 +144,11 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 ### Implementation for User Story 3
 
-- [ ] T015 [US3] `src/repositories/checkinRepository.ts` に `delete()` を実装する。
-- [ ] T016 [US3] `src/routes/checkins.ts` に
+- [X] T015 [US3] `src/repositories/checkinRepository.ts` に `delete()` を実装する。
+- [X] T016 [US3] `src/routes/checkins.ts` に
   `DELETE /api/habits/:habitId/checkins/:checkinId` を実装し、存在しない習慣ID・
   チェックインIDの場合404を返す。T014のテストをパスさせる。
-- [ ] T017 [US3] `public/js/habits.js` と `public/index.html` に、チェックイン履歴の
+- [X] T017 [US3] `public/js/habits.js` と `public/index.html` に、チェックイン履歴の
   一覧表示と、取り消しボタン＋確認ダイアログのUI（FR-007）を追加する。
 
 **Checkpoint**: すべてのユーザーストーリーが独立に動作する。
@@ -159,13 +159,13 @@ quickstart.md（すべて利用可能）。`001-habit-management`の実装が完
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T018 [P] `public/css/styles.css` にチェックイン・ストリーク・履歴UIの見た目を
+- [X] T018 [P] `public/css/styles.css` にチェックイン・ストリーク・履歴UIの見た目を
   整える。
-- [ ] T019 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特にチェックイン
+- [X] T019 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特にチェックイン
   取り消しの確認ダイアログの表示・キャンセル動作（FR-007）を含めて確認する。
-- [ ] T020 習慣削除時のチェックインカスケード削除（FR-014）を手動確認する。習慣を
+- [X] T020 習慣削除時のチェックインカスケード削除（FR-014）を手動確認する。習慣を
   削除し、対応する`checkins`レコードが（APIまたはDB経由で）残っていないことを確認する。
-- [ ] T021 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
+- [X] T021 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
   確認する。
 
 ---

@@ -20,6 +20,14 @@ CREATE TABLE IF NOT EXISTS habits (
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS checkins (
+  id TEXT PRIMARY KEY,
+  habit_id TEXT NOT NULL REFERENCES habits(id) ON DELETE CASCADE,
+  date TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (habit_id, date)
+);
 `;
 
 export function createDatabase(path: string = ":memory:"): DatabaseSync {
@@ -28,6 +36,7 @@ export function createDatabase(path: string = ":memory:"): DatabaseSync {
   }
 
   const db = new DatabaseSyncCtor(path);
+  db.exec("PRAGMA foreign_keys = ON;");
   db.exec(SCHEMA_SQL);
   return db;
 }

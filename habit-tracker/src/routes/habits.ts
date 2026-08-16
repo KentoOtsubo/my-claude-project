@@ -3,15 +3,29 @@ import {
   HabitValidationError,
   normalizeCategoryFilter,
 } from "../domain/habit.js";
+import { calculateCurrentStreak } from "../domain/streak.js";
+import type { CheckInRepository } from "../repositories/checkinRepository.js";
 import type { HabitRepository } from "../repositories/habitRepository.js";
 
-export function createHabitsRouter(repository: HabitRepository): Router {
+export function createHabitsRouter(
+  repository: HabitRepository,
+  checkinRepository: CheckInRepository,
+): Router {
   const router = Router();
 
   router.get("/", (req, res) => {
     try {
       const category = normalizeCategoryFilter(req.query.category);
-      res.json(repository.findAll(category));
+      const today = new Date().toISOString().slice(0, 10);
+      const habits = repository.findAll(category).map((habit) => ({
+        ...habit,
+        currentStreak: calculateCurrentStreak(
+          habit,
+          checkinRepository.findByHabitId(habit.id).map((c) => c.date),
+          today,
+        ),
+      }));
+      res.json(habits);
     } catch (error) {
       if (error instanceof HabitValidationError) {
         res.status(400).json({ error: error.message });

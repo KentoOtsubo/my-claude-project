@@ -1,6 +1,8 @@
 import express from "express";
 import { createDatabase } from "./repositories/db.js";
+import { CheckInRepository } from "./repositories/checkinRepository.js";
 import { HabitRepository } from "./repositories/habitRepository.js";
+import { createCheckinsRouter } from "./routes/checkins.js";
 import { createHabitsRouter } from "./routes/habits.js";
 
 export interface CreateAppOptions {
@@ -18,7 +20,12 @@ export function createApp(options: CreateAppOptions = {}) {
 
   const db = createDatabase(options.dbPath ?? ":memory:");
   const habitRepository = new HabitRepository(db);
-  app.use("/api/habits", createHabitsRouter(habitRepository));
+  const checkinRepository = new CheckInRepository(db);
+  app.use("/api/habits", createHabitsRouter(habitRepository, checkinRepository));
+  app.use(
+    "/api/habits/:habitId/checkins",
+    createCheckinsRouter(habitRepository, checkinRepository),
+  );
 
   return app;
 }

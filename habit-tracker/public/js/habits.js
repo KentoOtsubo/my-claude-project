@@ -65,17 +65,51 @@ function exitEditMode() {
   formCancelButton.hidden = true;
 }
 
-function renderHabitList(habits) {
-  listElement.innerHTML = "";
-  listEmptyElement.hidden = habits.length > 0;
+function todayString() {
+  return new Date().toISOString().slice(0, 10);
+}
 
-  for (const habit of habits) {
+function dayOfWeek(dateString) {
+  return new Date(`${dateString}T00:00:00.000Z`).getUTCDay();
+}
+
+function isTargetDay(habit, dateString) {
+  return (
+    habit.frequencyType === "daily" ||
+    habit.weeklyDays.includes(dayOfWeek(dateString))
+  );
+}
+
+function renderHabitList(habitsWithCheckins) {
+  listElement.innerHTML = "";
+  listEmptyElement.hidden = habitsWithCheckins.length > 0;
+
+  for (const { habit, checkins } of habitsWithCheckins) {
     const item = document.createElement("li");
     item.dataset.habitId = habit.id;
 
     const label = document.createElement("span");
     label.textContent = formatHabit(habit);
     item.appendChild(label);
+
+    const streakLabel = document.createElement("span");
+    streakLabel.textContent = `🔥 ${habit.currentStreak}日継続`;
+    item.appendChild(streakLabel);
+
+    const today = todayString();
+    const checkedInToday = checkins.some((c) => c.date === today);
+    if (checkedInToday) {
+      const doneLabel = document.createElement("span");
+      doneLabel.textContent = "✓ 本日チェックイン済み";
+      item.appendChild(doneLabel);
+    } else if (isTargetDay(habit, today)) {
+      const checkInButton = document.createElement("button");
+      checkInButton.type = "button";
+      checkInButton.textContent = "チェックイン";
+      checkInButton.addEventListener("click", () => checkInHabit(habit.id));
+      item.appendChild(checkInButton);
+    }
+    // 対象日でない場合はチェックインボタンを表示しない
 
     const editButton = document.createElement("button");
     editButton.type = "button";
@@ -89,8 +123,56 @@ function renderHabitList(habits) {
     deleteButton.addEventListener("click", () => deleteHabit(habit.id));
     item.appendChild(deleteButton);
 
+    item.appendChild(renderCheckinHistory(habit, checkins));
+
     listElement.appendChild(item);
   }
+}
+
+function renderCheckinHistory(habit, checkins) {
+  const historyList = document.createElement("ul");
+  historyList.className = "checkin-history";
+
+  if (checkins.length === 0) {
+    const empty = document.createElement("li");
+    empty.textContent = "チェックイン履歴がありません";
+    historyList.appendChild(empty);
+    return historyList;
+  }
+
+  for (const checkin of checkins) {
+    const entry = document.createElement("li");
+
+    const dateLabel = document.createElement("span");
+    dateLabel.textContent = checkin.date;
+    entry.appendChild(dateLabel);
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.textContent = "取り消し";
+    cancelButton.addEventListener("click", () =>
+      cancelCheckIn(habit.id, checkin.id),
+    );
+    entry.appendChild(cancelButton);
+
+    historyList.appendChild(entry);
+  }
+
+  return historyList;
+}
+
+async function cancelCheckIn(habitId, checkinId) {
+  const confirmed = window.confirm(
+    "このチェックインを取り消しますか？（元に戻せません）",
+  );
+  if (!confirmed) {
+    return;
+  }
+
+  await fetch(`/api/habits/${habitId}/checkins/${checkinId}`, {
+    method: "DELETE",
+  });
+  await loadHabits();
 }
 
 async function loadHabits() {
@@ -98,7 +180,32 @@ async function loadHabits() {
   const query = category ? `?category=${encodeURIComponent(category)}` : "";
   const res = await fetch(`/api/habits${query}`);
   const habits = await res.json();
-  renderHabitList(habits);
+
+  const habitsWithCheckins = await Promise.all(
+    habits.map(async (habit) => {
+      const checkinsRes = await fetch(`/api/habits/${habit.id}/checkins`);
+      const checkins = await checkinsRes.json();
+      return { habit, checkins };
+    }),
+  );
+
+  renderHabitList(habitsWithCheckins);
+}
+
+async function checkInHabit(habitId) {
+  const res = await fetch(`/api/habits/${habitId}/checkins`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+
+  if (!res.ok) {
+    const body = await res.json();
+    window.alert(body.error ?? "チェックインに失敗しました");
+    return;
+  }
+
+  await loadHabits();
 }
 
 async function deleteHabit(id) {
