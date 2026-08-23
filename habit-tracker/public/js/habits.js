@@ -65,8 +65,12 @@ function exitEditMode() {
   formCancelButton.hidden = true;
 }
 
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
+// サーバー側（src/domain/clock.ts）と同じ方式で、ブラウザのタイムゾーン設定に
+// 依存せず日本時間（JST, UTC+9）の日付を固定オフセット計算で求める。
 function todayString() {
-  return new Date().toISOString().slice(0, 10);
+  return new Date(Date.now() + JST_OFFSET_MS).toISOString().slice(0, 10);
 }
 
 function dayOfWeek(dateString) {
@@ -173,6 +177,7 @@ async function cancelCheckIn(habitId, checkinId) {
     method: "DELETE",
   });
   await loadHabits();
+  await loadGoals();
 }
 
 async function loadHabits() {
@@ -206,6 +211,7 @@ async function checkInHabit(habitId) {
   }
 
   await loadHabits();
+  await loadGoals();
 }
 
 async function deleteHabit(id) {
@@ -219,7 +225,156 @@ async function deleteHabit(id) {
     exitEditMode();
   }
   await loadHabits();
+  await loadGoals();
 }
+
+const goalForm = document.getElementById("goal-form");
+const goalHabitSelect = document.getElementById("goal-habit");
+const goalStartDateInput = document.getElementById("goal-start-date");
+const goalEndDateInput = document.getElementById("goal-end-date");
+const goalTargetCountInput = document.getElementById("goal-target-count");
+const goalFormSubmitButton = document.getElementById("goal-form-submit");
+const goalFormCancelButton = document.getElementById("goal-form-cancel");
+const goalFormError = document.getElementById("goal-form-error");
+const goalListElement = document.getElementById("goal-list");
+const goalListEmptyElement = document.getElementById("goal-list-empty");
+
+let habitsById = new Map();
+let editingGoalId = null;
+
+function formatGoalPeriod(goal) {
+  return `${goal.startDate} 〜 ${goal.endDate}`;
+}
+
+function renderGoalList(goals) {
+  goalListElement.innerHTML = "";
+  goalListEmptyElement.hidden = goals.length > 0;
+
+  for (const goal of goals) {
+    const item = document.createElement("li");
+    item.dataset.goalId = goal.id;
+
+    const habitName = habitsById.get(goal.habitId)?.name ?? "(不明な習慣)";
+    const label = document.createElement("span");
+    label.textContent = `${habitName}: ${formatGoalPeriod(goal)} / 目標${goal.targetCount}回`;
+    item.appendChild(label);
+
+    const progressLabel = document.createElement("span");
+    progressLabel.textContent = goal.achieved
+      ? `🎉 達成（${goal.actualCount}/${goal.targetCount}回・${goal.progressPercent}%）`
+      : `進捗 ${goal.progressPercent}%（${goal.actualCount}/${goal.targetCount}回）`;
+    item.appendChild(progressLabel);
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.textContent = "編集";
+    editButton.addEventListener("click", () => enterGoalEditMode(goal));
+    item.appendChild(editButton);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "削除";
+    deleteButton.addEventListener("click", () => deleteGoal(goal.id));
+    item.appendChild(deleteButton);
+
+    goalListElement.appendChild(item);
+  }
+}
+
+function enterGoalEditMode(goal) {
+  editingGoalId = goal.id;
+  goalHabitSelect.value = goal.habitId;
+  goalHabitSelect.disabled = true;
+  goalStartDateInput.value = goal.startDate;
+  goalEndDateInput.value = goal.endDate;
+  goalTargetCountInput.value = String(goal.targetCount);
+  goalFormSubmitButton.textContent = "更新";
+  goalFormCancelButton.hidden = false;
+  goalFormError.textContent = "";
+}
+
+function exitGoalEditMode() {
+  editingGoalId = null;
+  goalForm.reset();
+  goalHabitSelect.disabled = false;
+  goalFormSubmitButton.textContent = "設定";
+  goalFormCancelButton.hidden = true;
+}
+
+async function deleteGoal(id) {
+  const confirmed = window.confirm("この目標を削除しますか？（元に戻せません）");
+  if (!confirmed) {
+    return;
+  }
+
+  await fetch(`/api/goals/${id}`, { method: "DELETE" });
+  if (editingGoalId === id) {
+    exitGoalEditMode();
+  }
+  await loadGoals();
+}
+
+async function populateGoalHabitSelect() {
+  const res = await fetch("/api/habits");
+  const habits = await res.json();
+  habitsById = new Map(habits.map((habit) => [habit.id, habit]));
+
+  const selected = goalHabitSelect.value;
+  goalHabitSelect.innerHTML = "";
+  for (const habit of habits) {
+    const option = document.createElement("option");
+    option.value = habit.id;
+    option.textContent = habit.name;
+    goalHabitSelect.appendChild(option);
+  }
+  if (habits.some((habit) => habit.id === selected)) {
+    goalHabitSelect.value = selected;
+  }
+}
+
+async function loadGoals() {
+  await populateGoalHabitSelect();
+  const res = await fetch("/api/goals");
+  const goals = await res.json();
+  renderGoalList(goals);
+}
+
+goalFormCancelButton.addEventListener("click", () => {
+  exitGoalEditMode();
+});
+
+goalForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  goalFormError.textContent = "";
+
+  const payload = {
+    habitId: goalHabitSelect.value,
+    startDate: goalStartDateInput.value,
+    endDate: goalEndDateInput.value,
+    targetCount: Number(goalTargetCountInput.value),
+  };
+
+  const res = editingGoalId
+    ? await fetch(`/api/goals/${editingGoalId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+    : await fetch("/api/goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+  if (!res.ok) {
+    const body = await res.json();
+    goalFormError.textContent = body.error ?? "処理に失敗しました";
+    return;
+  }
+
+  exitGoalEditMode();
+  await loadGoals();
+});
 
 frequencyTypeSelect.addEventListener("change", () => {
   weeklyDaysFieldset.hidden = frequencyTypeSelect.value !== "weekly";
@@ -264,6 +419,8 @@ form.addEventListener("submit", async (event) => {
 
   exitEditMode();
   await loadHabits();
+  await loadGoals();
 });
 
 loadHabits();
+loadGoals();

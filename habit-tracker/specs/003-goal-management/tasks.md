@@ -36,7 +36,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 **Purpose**: 本機能に必要な依存関係の確認（`001`/`002`の環境をそのまま利用するため、
 新規インストールは想定していない）
 
-- [ ] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
+- [X] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
 
 ---
 
@@ -46,7 +46,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
-- [ ] T002 `src/repositories/db.ts` を拡張し、`goals` テーブルのスキーマ初期化
+- [X] T002 `src/repositories/db.ts` を拡張し、`goals` テーブルのスキーマ初期化
   （`CREATE TABLE IF NOT EXISTS`、`habit_id` への `ON DELETE CASCADE` 外部キー、
   `target_count >= 1` のCHECK制約）を追加する（`data-model.md`のSQLスキーマ参照）。
   `PRAGMA foreign_keys = ON;` は`002`で有効化済みのため追加作業は不要。
@@ -66,11 +66,11 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 > **NOTE: これらのテストを先に作成し、失敗することを確認してから実装する**
 
-- [ ] T003 [P] [US1] `tests/unit/domain/goal.test.ts` に、目標の検証ロジック
+- [X] T003 [P] [US1] `tests/unit/domain/goal.test.ts` に、目標の検証ロジック
   （開始日が終了日より後の場合のエラー、目標回数が1以上の整数であることの検証、
   対象習慣の作成日より前の開始日のエラー: FR-002, FR-003, FR-005）のユニットテストを
   作成する。
-- [ ] T004 [P] [US1] `tests/integration/goals.test.ts` に、`POST /api/goals` の登録
+- [X] T004 [P] [US1] `tests/integration/goals.test.ts` に、`POST /api/goals` の登録
   成功・開始日が終了日より後のエラー・目標回数0以下のエラー・存在しない習慣IDの
   エラー（spec.md Acceptance Scenario 1-3, FR-004）に加え、習慣を削除すると紐づく
   目標も連鎖削除されること（`001`の`DELETE /api/habits/:id`実行後、対象習慣の目標が
@@ -78,15 +78,15 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] `src/domain/goal.ts` に、目標の検証ロジック（開始日・終了日・目標
+- [X] T005 [US1] `src/domain/goal.ts` に、目標の検証ロジック（開始日・終了日・目標
   回数・習慣作成日境界）を実装し、T003のテストをパスさせる。
-- [ ] T006 [US1] `src/repositories/goalRepository.ts` に `create()` と `findAll()` を
+- [X] T006 [US1] `src/repositories/goalRepository.ts` に `create()` と `findAll()` を
   実装する（T002の`db.ts`を使用）。
-- [ ] T007 [US1] `src/routes/goals.ts` に `POST /api/goals` と `GET /api/goals`
+- [X] T007 [US1] `src/routes/goals.ts` に `POST /api/goals` と `GET /api/goals`
   （進捗フィールドは含めない基本形、`contracts/goals-api.md`参照）を実装し、
   `src/app.ts` にルーターをマウントする。存在しない習慣IDの場合404を返す。T004の
   テストをパスさせる。
-- [ ] T008 [US1] `public/index.html` と `public/js/habits.js` に、目標設定フォームと
+- [X] T008 [US1] `public/index.html` と `public/js/habits.js` に、目標設定フォームと
   基本的な目標一覧表示のUIを追加する（`quickstart.md`手順2参照）。
 
 **Checkpoint**: User Story 1が単独で完全に動作・テスト可能（MVP）。
@@ -103,10 +103,10 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T009 [P] [US2] `tests/unit/domain/goalProgress.test.ts` に、進捗計算ロジック
+- [X] T009 [P] [US2] `tests/unit/domain/goalProgress.test.ts` に、進捗計算ロジック
   （対象期間内のチェックイン数の集計、100%を超える場合のキャップ、達成判定:
   FR-006〜FR-008）のユニットテストを作成する。
-- [ ] T010 [P] [US2] `tests/integration/goals.test.ts` に、`GET /api/goals`の
+- [X] T010 [P] [US2] `tests/integration/goals.test.ts` に、`GET /api/goals`の
   レスポンスに `actualCount` / `progressPercent` / `achieved` が正しく含まれること
   （spec.md Acceptance Scenario 1-3）に加え、同一習慣に期間が重複する2つの目標を
   設定した場合、それぞれの目標が自身の期間・目標回数に基づき独立して進捗を計算する
@@ -114,13 +114,13 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] `src/domain/goalProgress.ts` に、目標とチェックイン日付集合から
+- [X] T011 [US2] `src/domain/goalProgress.ts` に、目標とチェックイン日付集合から
   進捗率・達成判定を計算する純粋関数を実装し、T009のテストをパスさせる
   （`research.md`「2. 進捗計算の設計」参照）。
-- [ ] T012 [US2] `src/routes/goals.ts` のGETハンドラを拡張し、
+- [X] T012 [US2] `src/routes/goals.ts` のGETハンドラを拡張し、
   `checkinRepository.findByHabitId()` と `goalProgress.ts` を用いて各目標に
   `actualCount` / `progressPercent` / `achieved` を付加する。T010のテストをパスさせる。
-- [ ] T013 [US2] `public/js/habits.js` と `public/index.html` に、目標一覧の各行へ
+- [X] T013 [US2] `public/js/habits.js` と `public/index.html` に、目標一覧の各行へ
   進捗率・達成状態を表示するUIを追加する。
 
 **Checkpoint**: User Story 1・2がともに単独で動作する。
@@ -137,21 +137,21 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T014 [P] [US3] `tests/integration/goals.test.ts` に、`PUT /api/goals/:id`
+- [X] T014 [P] [US3] `tests/integration/goals.test.ts` に、`PUT /api/goals/:id`
   （更新成功・部分更新時の既存フィールド保持・存在しないID時404）と
   `DELETE /api/goals/:id`（削除成功・存在しないID時404）の統合テストを追加する
   （spec.md Acceptance Scenario 1-4, FR-010, FR-011, FR-013）。
 
 ### Implementation for User Story 3
 
-- [ ] T015 [US3] `src/repositories/goalRepository.ts` に `findById()`・`update()`・
+- [X] T015 [US3] `src/repositories/goalRepository.ts` に `findById()`・`update()`・
   `delete()` を実装する。`update()`は既存レコードと送信フィールドをマージした
   うえで`src/domain/goal.ts`の検証ロジックを再適用する（`001`のPUT部分更新マージ
   方針を踏襲、`data-model.md`参照）。
-- [ ] T016 [US3] `src/routes/goals.ts` に `PUT /api/goals/:id` と
+- [X] T016 [US3] `src/routes/goals.ts` に `PUT /api/goals/:id` と
   `DELETE /api/goals/:id` を実装し、存在しないIDの場合404を返す。T014のテストを
   パスさせる。
-- [ ] T017 [US3] `public/js/habits.js` と `public/index.html` に、目標の編集フォームと
+- [X] T017 [US3] `public/js/habits.js` と `public/index.html` に、目標の編集フォームと
   削除確認ダイアログのUI（FR-012）を追加する。
 
 **Checkpoint**: すべてのユーザーストーリーが独立に動作する。
@@ -162,11 +162,11 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T018 [P] `public/css/styles.css` に目標設定・進捗・編集・削除UIの見た目を
+- [X] T018 [P] `public/css/styles.css` に目標設定・進捗・編集・削除UIの見た目を
   整える。
-- [ ] T019 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特に削除確認
+- [X] T019 `quickstart.md` の全シナリオを手動実行し、動作を確認する。特に削除確認
   ダイアログの表示・キャンセル動作（FR-012）を含めて確認する。
-- [ ] T020 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
+- [X] T020 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録されることを
   確認する。
 
 ---

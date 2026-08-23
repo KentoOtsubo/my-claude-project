@@ -70,6 +70,41 @@
       <p id="habit-list-empty" hidden>登録されている習慣がありません</p>
     </section>
 
+    <section>
+      <h2>目標を設定</h2>
+      <form id="goal-form">
+        <label>
+          対象の習慣
+          <select id="goal-habit" required></select>
+        </label>
+
+        <label>
+          開始日
+          <input type="date" id="goal-start-date" required />
+        </label>
+
+        <label>
+          終了日
+          <input type="date" id="goal-end-date" required />
+        </label>
+
+        <label>
+          目標回数
+          <input type="number" id="goal-target-count" min="1" step="1" required />
+        </label>
+
+        <button type="submit" id="goal-form-submit">設定</button>
+        <button type="button" id="goal-form-cancel" hidden>編集をキャンセル</button>
+      </form>
+      <p id="goal-form-error" role="alert"></p>
+    </section>
+
+    <section>
+      <h2>目標一覧</h2>
+      <ul id="goal-list"></ul>
+      <p id="goal-list-empty" hidden>登録されている目標がありません</p>
+    </section>
+
     <script type="module" src="/js/habits.js"></script>
   </body>
 </html>

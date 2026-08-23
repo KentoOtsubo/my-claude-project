@@ -1,11 +1,8 @@
 import { Router } from "express";
+import { todayJst } from "../domain/clock.js";
 import { CheckInValidationError } from "../domain/checkin.js";
 import type { CheckInRepository } from "../repositories/checkinRepository.js";
 import type { HabitRepository } from "../repositories/habitRepository.js";
-
-function today(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 export function createCheckinsRouter(
   habitRepository: HabitRepository,
@@ -16,7 +13,7 @@ export function createCheckinsRouter(
   router.get<{ habitId: string }>("/", (req, res) => {
     const habit = habitRepository.findById(req.params.habitId);
     if (!habit) {
-      res.status(404).json({ error: "habit not found" });
+      res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
@@ -26,7 +23,7 @@ export function createCheckinsRouter(
   router.post<{ habitId: string }>("/", (req, res) => {
     const habit = habitRepository.findById(req.params.habitId);
     if (!habit) {
-      res.status(404).json({ error: "habit not found" });
+      res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
@@ -35,7 +32,7 @@ export function createCheckinsRouter(
         habit.id,
         req.body ?? {},
         habit.createdAt,
-        today(),
+        todayJst(),
       );
       res.status(201).json(checkIn);
     } catch (error) {
@@ -50,13 +47,13 @@ export function createCheckinsRouter(
   router.delete<{ habitId: string; checkinId: string }>("/:checkinId", (req, res) => {
     const habit = habitRepository.findById(req.params.habitId);
     if (!habit) {
-      res.status(404).json({ error: "habit not found" });
+      res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
     const deleted = checkinRepository.delete(habit.id, req.params.checkinId);
     if (!deleted) {
-      res.status(404).json({ error: "check-in not found" });
+      res.status(404).json({ error: "指定されたチェックインが見つかりません" });
       return;
     }
     res.status(204).send();

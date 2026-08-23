@@ -44,14 +44,14 @@ export function normalizeHabitInput(input: HabitInput): NormalizedHabitInput {
   const name = (input.name ?? "").trim();
   if (name.length < 1 || name.length > 100) {
     throw new HabitValidationError(
-      "name must be between 1 and 100 characters",
+      "名前は1文字以上100文字以下で入力してください",
     );
   }
 
   const frequencyType = input.frequencyType ?? "daily";
   if (!FREQUENCY_TYPES.includes(frequencyType)) {
     throw new HabitValidationError(
-      `frequencyType must be one of ${FREQUENCY_TYPES.join(", ")}`,
+      "頻度は「毎日」または「毎週」のいずれかを指定してください",
     );
   }
 
@@ -67,7 +67,7 @@ export function normalizeHabitInput(input: HabitInput): NormalizedHabitInput {
 
     if (!isValidWeeklyDays) {
       throw new HabitValidationError(
-        "weeklyDays must contain at least one unique integer between 0 and 6 when frequencyType is weekly",
+        "毎週の場合は曜日を1つ以上指定してください（重複や不正な値は指定できません）",
       );
     }
   }
@@ -75,7 +75,7 @@ export function normalizeHabitInput(input: HabitInput): NormalizedHabitInput {
   const category = input.category ?? "uncategorized";
   if (!isCategory(category)) {
     throw new HabitValidationError(
-      `category must be one of ${CATEGORIES.join(", ")}`,
+      "カテゴリは「健康」「仕事」「学習」「その他」「未分類」のいずれかを指定してください",
     );
   }
 
@@ -90,7 +90,7 @@ export function normalizeCategoryFilter(value: unknown): Category | undefined {
 
   if (!isCategory(value)) {
     throw new HabitValidationError(
-      `category must be one of ${CATEGORIES.join(", ")}`,
+      "カテゴリは「健康」「仕事」「学習」「その他」「未分類」のいずれかを指定してください",
     );
   }
 

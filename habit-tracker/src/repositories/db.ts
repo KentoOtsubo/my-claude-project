@@ -28,6 +28,16 @@ CREATE TABLE IF NOT EXISTS checkins (
   created_at TEXT NOT NULL,
   UNIQUE (habit_id, date)
 );
+
+CREATE TABLE IF NOT EXISTS goals (
+  id TEXT PRIMARY KEY,
+  habit_id TEXT NOT NULL REFERENCES habits(id) ON DELETE CASCADE,
+  start_date TEXT NOT NULL,
+  end_date TEXT NOT NULL,
+  target_count INTEGER NOT NULL CHECK (target_count >= 1),
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
 `;
 
 export function createDatabase(path: string = ":memory:"): DatabaseSync {

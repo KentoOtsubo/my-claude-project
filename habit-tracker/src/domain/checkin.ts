@@ -1,3 +1,5 @@
+import { toJstDateString } from "./clock.js";
+
 export interface CheckIn {
   id: string;
   habitId: string;
@@ -24,8 +26,8 @@ export interface CheckInValidationContext {
 
 export class CheckInValidationError extends Error {}
 
-function toDateOnly(isoOrDate: string): string {
-  return isoOrDate.slice(0, 10);
+function toDateOnly(isoDateTime: string): string {
+  return toJstDateString(new Date(isoDateTime));
 }
 
 /**
@@ -41,19 +43,19 @@ export function normalizeCheckInInput(
 
   if (date > context.today) {
     throw new CheckInValidationError(
-      "date must not be in the future",
+      "未来の日付にはチェックインできません",
     );
   }
 
   if (date < toDateOnly(context.habitCreatedAt)) {
     throw new CheckInValidationError(
-      "date must not be before the habit was created",
+      "習慣の作成日より前の日付にはチェックインできません",
     );
   }
 
   if (context.existingDates?.includes(date)) {
     throw new CheckInValidationError(
-      "a check-in for this habit and date already exists",
+      "この習慣・日付には既にチェックインが記録されています",
     );
   }
 

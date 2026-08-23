@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { todayJst } from "../domain/clock.js";
 import {
   HabitValidationError,
   normalizeCategoryFilter,
@@ -16,7 +17,7 @@ export function createHabitsRouter(
   router.get("/", (req, res) => {
     try {
       const category = normalizeCategoryFilter(req.query.category);
-      const today = new Date().toISOString().slice(0, 10);
+      const today = todayJst();
       const habits = repository.findAll(category).map((habit) => ({
         ...habit,
         currentStreak: calculateCurrentStreak(
@@ -52,7 +53,7 @@ export function createHabitsRouter(
     try {
       const habit = repository.update(req.params.id, req.body ?? {});
       if (!habit) {
-        res.status(404).json({ error: "habit not found" });
+        res.status(404).json({ error: "指定された習慣が見つかりません" });
         return;
       }
       res.json(habit);
@@ -68,7 +69,7 @@ export function createHabitsRouter(
   router.delete("/:id", (req, res) => {
     const deleted = repository.delete(req.params.id);
     if (!deleted) {
-      res.status(404).json({ error: "habit not found" });
+      res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
     res.status(204).send();

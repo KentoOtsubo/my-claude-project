@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import type { Express } from "express";
 import { createApp } from "../../src/app.js";
+import { todayJst as today } from "../../src/domain/clock.js";
 
 describe("/api/habits/:habitId/checkins", () => {
   let app: Express;
@@ -24,13 +25,14 @@ describe("/api/habits/:habitId/checkins", () => {
   describe("POST /api/habits/:habitId/checkins", () => {
     it("日付を指定してチェックインを記録できる (Acceptance Scenario 1)", async () => {
       const habit = await createHabit();
+      const date = today();
 
       const res = await request(app)
         .post(`/api/habits/${habit.id}/checkins`)
-        .send({ date: "2026-08-16" });
+        .send({ date });
 
       expect(res.status).toBe(201);
-      expect(res.body).toMatchObject({ habitId: habit.id, date: "2026-08-16" });
+      expect(res.body).toMatchObject({ habitId: habit.id, date });
     });
 
     it("日付未指定の場合は今日の日付で記録される (FR-002)", async () => {
@@ -46,13 +48,15 @@ describe("/api/habits/:habitId/checkins", () => {
 
     it("同じ習慣・同じ日付への重複チェックインは400を返す (Acceptance Scenario 2)", async () => {
       const habit = await createHabit();
-      await request(app)
+      const date = today();
+      const first = await request(app)
         .post(`/api/habits/${habit.id}/checkins`)
-        .send({ date: "2026-08-16" });
+        .send({ date });
+      expect(first.status).toBe(201);
 
       const res = await request(app)
         .post(`/api/habits/${habit.id}/checkins`)
-        .send({ date: "2026-08-16" });
+        .send({ date });
 
       expect(res.status).toBe(400);
     });
@@ -77,9 +81,10 @@ describe("/api/habits/:habitId/checkins", () => {
 
     it("習慣を削除すると紐づくチェックインも連鎖削除される (FR-014)", async () => {
       const habit = await createHabit();
-      await request(app)
+      const created = await request(app)
         .post(`/api/habits/${habit.id}/checkins`)
-        .send({ date: "2026-08-16" });
+        .send({ date: today() });
+      expect(created.status).toBe(201);
 
       await request(app).delete(`/api/habits/${habit.id}`);
 
@@ -131,7 +136,8 @@ describe("/api/habits/:habitId/checkins", () => {
       const habit = await createHabit();
       const created = await request(app)
         .post(`/api/habits/${habit.id}/checkins`)
-        .send({ date: "2026-08-16" });
+        .send({ date: today() });
+      expect(created.status).toBe(201);
 
       const res = await request(app).delete(
         `/api/habits/${habit.id}/checkins/${created.body.id}`,
