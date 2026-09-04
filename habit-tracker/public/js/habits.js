@@ -178,6 +178,7 @@ async function cancelCheckIn(habitId, checkinId) {
   });
   await loadHabits();
   await loadGoals();
+  await loadDashboard();
 }
 
 async function loadHabits() {
@@ -212,6 +213,7 @@ async function checkInHabit(habitId) {
 
   await loadHabits();
   await loadGoals();
+  await loadDashboard();
 }
 
 async function deleteHabit(id) {
@@ -226,6 +228,7 @@ async function deleteHabit(id) {
   }
   await loadHabits();
   await loadGoals();
+  await loadDashboard();
 }
 
 const goalForm = document.getElementById("goal-form");
@@ -312,6 +315,7 @@ async function deleteGoal(id) {
     exitGoalEditMode();
   }
   await loadGoals();
+  await loadDashboard();
 }
 
 async function populateGoalHabitSelect() {
@@ -374,7 +378,67 @@ goalForm.addEventListener("submit", async (event) => {
 
   exitGoalEditMode();
   await loadGoals();
+  await loadDashboard();
 });
+
+const dashboardEmptyElement = document.getElementById("dashboard-empty");
+const dashboardHabitListElement = document.getElementById("dashboard-habit-list");
+const dashboardCategoryListElement = document.getElementById("dashboard-category-list");
+const dashboardGoalListElement = document.getElementById("dashboard-goal-list");
+
+const GOAL_STATUS_LABELS = {
+  in_progress: "進行中",
+  achieved: "達成",
+  not_achieved: "未達成",
+};
+
+function renderDashboardHabits(habits) {
+  dashboardHabitListElement.innerHTML = "";
+  for (const habit of habits) {
+    const item = document.createElement("li");
+    item.textContent =
+      `${habit.name}（${CATEGORY_LABELS[habit.category]}）: ` +
+      `今週の実施率 ${habit.weekly.actualDays}/${habit.weekly.targetDays}日（${habit.weekly.percent}%）, ` +
+      `今月の実施率 ${habit.monthly.actualDays}/${habit.monthly.targetDays}日（${habit.monthly.percent}%）, ` +
+      `🔥現在${habit.currentStreak}日 / 最長${habit.longestStreak}日`;
+    dashboardHabitListElement.appendChild(item);
+  }
+}
+
+function renderDashboardCategories(categories) {
+  dashboardCategoryListElement.innerHTML = "";
+  for (const category of categories) {
+    const item = document.createElement("li");
+    item.textContent =
+      `${CATEGORY_LABELS[category.category]}: ` +
+      `今週の実施率 ${category.weekly.percent}%, 今月の実施率 ${category.monthly.percent}%`;
+    dashboardCategoryListElement.appendChild(item);
+  }
+}
+
+function renderDashboardGoals(goals) {
+  dashboardGoalListElement.innerHTML = "";
+  for (const goal of goals) {
+    const item = document.createElement("li");
+    const habitName = habitsById.get(goal.habitId)?.name ?? "(不明な習慣)";
+    item.textContent =
+      `${habitName}: ${GOAL_STATUS_LABELS[goal.status]}` +
+      (goal.status === "in_progress" ? `（進捗 ${goal.progressPercent}%）` : "");
+    dashboardGoalListElement.appendChild(item);
+  }
+}
+
+async function loadDashboard() {
+  const res = await fetch("/api/reports/dashboard");
+  const dashboard = await res.json();
+
+  dashboardEmptyElement.hidden =
+    dashboard.habits.length > 0 || dashboard.goals.length > 0;
+
+  renderDashboardHabits(dashboard.habits);
+  renderDashboardCategories(dashboard.categories);
+  renderDashboardGoals(dashboard.goals);
+}
 
 frequencyTypeSelect.addEventListener("change", () => {
   weeklyDaysFieldset.hidden = frequencyTypeSelect.value !== "weekly";
@@ -420,7 +484,9 @@ form.addEventListener("submit", async (event) => {
   exitEditMode();
   await loadHabits();
   await loadGoals();
+  await loadDashboard();
 });
 
 loadHabits();
 loadGoals();
+loadDashboard();

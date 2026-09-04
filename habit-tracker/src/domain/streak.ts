@@ -1,23 +1,10 @@
 import type { FrequencyType } from "./habit.js";
+import { isTargetDay as isTargetDayShared, previousDate, toDateOnly } from "./targetDay.js";
 
 export interface StreakHabit {
   frequencyType: FrequencyType;
   weeklyDays: number[];
   createdAt: string;
-}
-
-function toDateOnly(isoOrDate: string): string {
-  return isoOrDate.slice(0, 10);
-}
-
-function dayOfWeek(date: string): number {
-  return new Date(`${date}T00:00:00.000Z`).getUTCDay();
-}
-
-function previousDate(date: string): string {
-  const d = new Date(`${date}T00:00:00.000Z`);
-  d.setUTCDate(d.getUTCDate() - 1);
-  return d.toISOString().slice(0, 10);
 }
 
 /**
@@ -33,8 +20,7 @@ export function calculateCurrentStreak(
   const createdDate = toDateOnly(habit.createdAt);
   const checkinSet = new Set(checkinDates);
 
-  const isTargetDay = (date: string): boolean =>
-    habit.frequencyType === "daily" || habit.weeklyDays.includes(dayOfWeek(date));
+  const isTargetDay = (date: string): boolean => isTargetDayShared(habit, date);
 
   /** `date`（inclusive指定次第）以前で最初に見つかる対象日。作成日より前に出たらnull。 */
   const findTargetDay = (date: string, inclusive: boolean): string | null => {

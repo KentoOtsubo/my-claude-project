@@ -105,6 +105,29 @@
       <p id="goal-list-empty" hidden>登録されている目標がありません</p>
     </section>
 
+    <section>
+      <h2>ダッシュボード</h2>
+      <p id="dashboard-empty" hidden>表示できるデータがありません</p>
+
+      <h3>習慣ごとの実施率</h3>
+      <p class="dashboard-note">
+        ※ 目標を設定していなくても、チェックイン実績から自動的に計算されます（目標の達成状況とは別物です）。
+      </p>
+      <ul id="dashboard-habit-list"></ul>
+
+      <h3>カテゴリ別の実施率</h3>
+      <p class="dashboard-note">
+        ※ 上記と同様、目標の設定有無に関わらずチェックイン実績から算出されます。
+      </p>
+      <ul id="dashboard-category-list"></ul>
+
+      <h3>目標の振り返り</h3>
+      <p class="dashboard-note">
+        ※「目標を設定」セクションで登録した目標のみ、ここに進行中/達成/未達成として表示されます。
+      </p>
+      <ul id="dashboard-goal-list"></ul>
+    </section>
+
     <script type="module" src="/js/habits.js"></script>
   </body>
 </html>

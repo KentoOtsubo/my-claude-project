@@ -6,6 +6,7 @@ import { HabitRepository } from "./repositories/habitRepository.js";
 import { createCheckinsRouter } from "./routes/checkins.js";
 import { createGoalsRouter } from "./routes/goals.js";
 import { createHabitsRouter } from "./routes/habits.js";
+import { createReportsRouter } from "./routes/reports.js";
 
 export interface CreateAppOptions {
   dbPath?: string;
@@ -32,6 +33,10 @@ export function createApp(options: CreateAppOptions = {}) {
   app.use(
     "/api/goals",
     createGoalsRouter(habitRepository, goalRepository, checkinRepository),
+  );
+  app.use(
+    "/api/reports",
+    createReportsRouter(habitRepository, checkinRepository, goalRepository),
   );
 
   return app;

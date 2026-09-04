@@ -36,7 +36,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 **Purpose**: 本機能に必要な依存関係の確認（`001`〜`003`の環境をそのまま利用するため、
 新規インストールは想定していない）
 
-- [ ] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
+- [X] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
 
 ---
 
@@ -49,13 +49,13 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 （User Story 3は`targetDay.ts`に依存しないため先行着手も可能だが、優先度順に
 進める）
 
-- [ ] T002 [P] `tests/unit/domain/targetDay.test.ts` に、対象日判定ロジック
+- [X] T002 [P] `tests/unit/domain/targetDay.test.ts` に、対象日判定ロジック
   （頻度「毎日」は常に対象、頻度「毎週」は指定曜日のみ対象）と日付操作ヘルパー
   （前日・翌日の算出）のユニットテストを作成する。
-- [ ] T003 `src/domain/targetDay.ts` に、`isTargetDay(habit, date)` と
+- [X] T003 `src/domain/targetDay.ts` に、`isTargetDay(habit, date)` と
   `previousDate(date)` / `nextDate(date)` を実装し、T002のテストをパスさせる
   （`streak.ts`から処理内容を移設する）。
-- [ ] T004 `src/domain/streak.ts` を変更し、内部の対象日判定・日付操作ロジックを
+- [X] T004 `src/domain/streak.ts` を変更し、内部の対象日判定・日付操作ロジックを
   T003の`targetDay.ts`の呼び出しに置き換える。`calculateCurrentStreak`の
   シグネチャ・返り値は変更しない。既存の`tests/unit/domain/streak.test.ts`が
   引き続きすべてパスすることを確認する（リファクタリングによるデグレード防止）。
@@ -77,17 +77,17 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 > **NOTE: これらのテストを先に作成し、失敗することを確認してから実装する**
 
-- [ ] T005 [P] [US1] `tests/unit/domain/completionRate.test.ts` に、習慣単位の
+- [X] T005 [P] [US1] `tests/unit/domain/completionRate.test.ts` に、習慣単位の
   週次/月次達成率計算ロジック（`calculateCompletionRate`: ウィンドウ内かつ習慣
   作成日以降の対象日数を分母、実施日数を分子とする算出、対象日数0件時は0%、
   頻度「毎週」で対象外曜日を分母に含めないこと: FR-001, FR-002, FR-004, FR-010）の
   ユニットテストを作成する。
-- [ ] T006 [P] [US1] `tests/unit/domain/longestStreak.test.ts` に、最長ストリーク
+- [X] T006 [P] [US1] `tests/unit/domain/longestStreak.test.ts` に、最長ストリーク
   計算ロジック（`calculateLongestStreak`: 過去の連続実施日数の最大値、当日が
   対象日かつ未チェックインの場合はリセットしない、チェックインが1件もない場合は
   0、習慣の作成日より前の日付を対象日数に含めないこと: FR-003, FR-004, FR-010）の
   ユニットテストを作成する。
-- [ ] T007 [P] [US1] `tests/integration/reports.test.ts` に、以下の統合テストを
+- [X] T007 [P] [US1] `tests/integration/reports.test.ts` に、以下の統合テストを
   作成する:
   1. `GET /api/reports/dashboard`のレスポンスで`habits`配列の各要素に
      `currentStreak`・`longestStreak`・`weekly`・`monthly`が正しく含まれること
@@ -103,13 +103,13 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] `src/domain/completionRate.ts` に、`calculateCompletionRate`
+- [X] T008 [P] [US1] `src/domain/completionRate.ts` に、`calculateCompletionRate`
   （習慣単位）を実装し、T005のテストをパスさせる（`targetDay.ts`のロジックを
   使用する、`research.md`「2.」参照）。
-- [ ] T009 [P] [US1] `src/domain/longestStreak.ts` に、`calculateLongestStreak`を
+- [X] T009 [P] [US1] `src/domain/longestStreak.ts` に、`calculateLongestStreak`を
   実装し、T006のテストをパスさせる（`targetDay.ts`のロジックを使用する、
   `research.md`「3.」参照）。
-- [ ] T010 [US1] `src/routes/reports.ts` を新規作成し、`createReportsRouter`
+- [X] T010 [US1] `src/routes/reports.ts` を新規作成し、`createReportsRouter`
   ファクトリ関数（`habitRepository`・`checkinRepository`・`goalRepository`の
   3つを最初から受け取る。`goalRepository`はUS3まで未使用）と
   `GET /api/reports/dashboard`ハンドラを実装する。`habitRepository.findAll()`・
@@ -119,10 +119,10 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
   いない場合も例外を発生させず`habits: []`を返す（FR-011）。`categories`/`goals`は
   `contracts/reports-api.md`の形状を満たす空配列（`[]`）を返す（US2・US3で実装を
   追加する）。T007のテストをパスさせる。
-- [ ] T011 [US1] `src/app.ts` に、`reportsRouter`（`habitRepository`・
+- [X] T011 [US1] `src/app.ts` に、`reportsRouter`（`habitRepository`・
   `checkinRepository`・`goalRepository`を注入、`goalRepository`はUS3で使用）を
   `/api/reports`にマウントする。
-- [ ] T012 [US1] `public/index.html` と `public/js/habits.js` に、ダッシュボード
+- [X] T012 [US1] `public/index.html` と `public/js/habits.js` に、ダッシュボード
   表示セクションを追加し、習慣ごとの今週/今月の達成率・最長ストリーク・現在の
   ストリークを一覧表示する（`quickstart.md`手順2参照）。
 
@@ -140,23 +140,23 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T013 [P] [US2] `tests/unit/domain/completionRate.test.ts` に、
+- [X] T013 [P] [US2] `tests/unit/domain/completionRate.test.ts` に、
   `calculateCategoryCompletionRate`（同一カテゴリに属する複数習慣の対象日数・
   実施日数を合算して算出、習慣が1件も属さないカテゴリは結果から除外: FR-006,
   FR-007）のユニットテストを追加する。
-- [ ] T014 [P] [US2] `tests/integration/reports.test.ts` に、
+- [X] T014 [P] [US2] `tests/integration/reports.test.ts` に、
   `GET /api/reports/dashboard`の`categories`配列にカテゴリごとの`weekly`/`monthly`
   達成率が正しく含まれること、習慣が1件も属さないカテゴリが含まれないこと
   （spec.md Acceptance Scenario 1-3）の統合テストを追加する。
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] `src/domain/completionRate.ts` に、`calculateCategoryCompletionRate`
+- [X] T015 [US2] `src/domain/completionRate.ts` に、`calculateCategoryCompletionRate`
   を追加実装し、T013のテストをパスさせる（`research.md`「4.」参照）。
-- [ ] T016 [US2] `src/routes/reports.ts` の`GET /api/reports/dashboard`ハンドラを
+- [X] T016 [US2] `src/routes/reports.ts` の`GET /api/reports/dashboard`ハンドラを
   拡張し、`habitRepository.findAll()`の結果をカテゴリごとにグルーピングして
   T015の関数で集計した`categories`配列を返す。T014のテストをパスさせる。
-- [ ] T017 [US2] `public/index.html` と `public/js/habits.js` に、カテゴリ別
+- [X] T017 [US2] `public/index.html` と `public/js/habits.js` に、カテゴリ別
   達成率の比較表示セクションを追加する。
 
 **Checkpoint**: User Story 1・2がともに単独で動作する。
@@ -173,25 +173,25 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T018 [P] [US3] `tests/unit/domain/goalReviewStatus.test.ts` に、
+- [X] T018 [P] [US3] `tests/unit/domain/goalReviewStatus.test.ts` に、
   `determineGoalReviewStatus`（`endDate`が`today`より後なら`"in_progress"`、
   `today`以前かつ達成条件を満たせば`"achieved"`、満たさなければ`"not_achieved"`:
   FR-008, FR-009）のユニットテストを作成する。
-- [ ] T019 [P] [US3] `tests/integration/reports.test.ts` に、
+- [X] T019 [P] [US3] `tests/integration/reports.test.ts` に、
   `GET /api/reports/dashboard`の`goals`配列で、期間終了済みの達成/未達成の目標が
   正しい`status`で返ること、進行中の目標に`progressPercent`が併記されること
   （spec.md Acceptance Scenario 1-2）の統合テストを追加する。
 
 ### Implementation for User Story 3
 
-- [ ] T020 [US3] `src/domain/goalReviewStatus.ts` に、`determineGoalReviewStatus`
+- [X] T020 [US3] `src/domain/goalReviewStatus.ts` に、`determineGoalReviewStatus`
   を実装し、T018のテストをパスさせる（既存の`goalProgress.ts`の
   `calculateGoalProgress`を内部で再利用する、`research.md`「6.」参照）。
-- [ ] T021 [US3] `src/routes/reports.ts` の`GET /api/reports/dashboard`ハンドラを
+- [X] T021 [US3] `src/routes/reports.ts` の`GET /api/reports/dashboard`ハンドラを
   拡張し、`goalRepository.findAll()`・`checkinRepository.findByHabitId()`を用いて
   T020の関数で判定した`goals`配列（`status`・`actualCount`・`progressPercent`）を
   返す。T019のテストをパスさせる。
-- [ ] T022 [US3] `public/index.html` と `public/js/habits.js` に、目標の
+- [X] T022 [US3] `public/index.html` と `public/js/habits.js` に、目標の
   進行中/達成/未達成を一覧表示する振り返りセクションを追加する。
 
 **Checkpoint**: すべてのユーザーストーリーが独立に動作する。
@@ -202,10 +202,10 @@ quickstart.md（すべて利用可能）。`001-habit-management`・`002-checkin
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T023 [P] `public/css/styles.css` にダッシュボード（習慣別・カテゴリ別・
+- [X] T023 [P] `public/css/styles.css` にダッシュボード（習慣別・カテゴリ別・
   目標振り返り）のUIの見た目を整える。
-- [ ] T024 `quickstart.md` の全シナリオを手動実行し、動作を確認する。
-- [ ] T025 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
+- [X] T024 `quickstart.md` の全シナリオを手動実行し、動作を確認する。
+- [X] T025 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
   ことを確認する。
 
 ---
