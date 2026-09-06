@@ -90,7 +90,7 @@ src/
 │   ├── checkinRepository.ts        # 既存、変更なし
 │   └── goalRepository.ts           # 既存、変更なし
 ├── routes/
-│   ├── habits.ts                    # 既存を拡張: PUT/POSTでreminderEnabledを受け付ける
+│   ├── habits.ts                    # 既存、変更なし（`HabitInput`型の変更のみで自動的に対応、req.bodyをそのままリポジトリへ渡す設計のため）
 │   ├── checkins.ts                  # 既存、変更なし（リマインダーからのチェックインもこれを再利用）
 │   ├── goals.ts                     # 既存、変更なし
 │   ├── reports.ts                   # 既存、変更なし
