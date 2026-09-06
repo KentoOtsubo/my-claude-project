@@ -10,6 +10,12 @@
     <h1>習慣トラッカー</h1>
 
     <section>
+      <h2>リマインダー</h2>
+      <p id="reminder-list-empty" hidden>今日の習慣はすべて実行済みです</p>
+      <ul id="reminder-list"></ul>
+    </section>
+
+    <section>
       <h2>習慣を登録</h2>
       <form id="habit-form">
         <label>
@@ -45,6 +51,11 @@
             <option value="study">学習</option>
             <option value="other">その他</option>
           </select>
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="habit-reminder-enabled" checked />
+          リマインダーに表示する
         </label>
 
         <button type="submit" id="habit-form-submit">登録</button>

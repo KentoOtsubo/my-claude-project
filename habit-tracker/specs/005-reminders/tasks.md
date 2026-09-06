@@ -36,7 +36,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 **Purpose**: 本機能に必要な依存関係の確認（`001`〜`004`の環境をそのまま利用するため、
 新規インストールは想定していない）
 
-- [ ] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
+- [X] T001 [P] `package.json`の依存関係を確認し、新規追加が不要であることを確認する。
 
 ---
 
@@ -48,21 +48,21 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 （US1のリマインダー算出・US3の表示切り替えのいずれも`reminderEnabled`に依存する）
 
-- [ ] T002 [P] `tests/unit/domain/habit.test.ts` に、`reminderEnabled`のデフォルト値
+- [X] T002 [P] `tests/unit/domain/habit.test.ts` に、`reminderEnabled`のデフォルト値
   適用（省略時`true`）と、真偽値以外が指定された場合のエラーのユニットテストを
   追加する（FR-006, FR-007）。
-- [ ] T003 `src/domain/habit.ts` の`HabitInput`/`NormalizedHabitInput`/`Habit`型と
+- [X] T003 `src/domain/habit.ts` の`HabitInput`/`NormalizedHabitInput`/`Habit`型と
   `normalizeHabitInput`に`reminderEnabled`（省略時`true`、真偽値以外はエラー）を
   追加し、T002のテストをパスさせる。
-- [ ] T004 `src/repositories/db.ts` を拡張し、`habits`テーブルに
+- [X] T004 `src/repositories/db.ts` を拡張し、`habits`テーブルに
   `reminder_enabled INTEGER NOT NULL DEFAULT 1 CHECK (reminder_enabled IN (0, 1))`
   カラムを追加する（`data-model.md`のSQLスキーマ参照。新規テーブルは作らない）。
-- [ ] T005 `src/repositories/habitRepository.ts` を拡張し、`create()`・`update()`の
+- [X] T005 `src/repositories/habitRepository.ts` を拡張し、`create()`・`update()`の
   INSERT/UPDATE文と`rowToHabit()`（`reminder_enabled`の0/1とbooleanの相互変換）で
   `reminderEnabled`を読み書きする。`update()`の部分更新マージ処理にも
   `reminderEnabled: input.reminderEnabled ?? existing.reminderEnabled`を追加する
   （`001`のPUT部分更新マージ方針を踏襲）。
-- [ ] T006 [P] `tests/integration/habits.test.ts` に、`POST /api/habits`で
+- [X] T006 [P] `tests/integration/habits.test.ts` に、`POST /api/habits`で
   `reminderEnabled`を省略すると`true`になること、明示的に`false`を指定すると
   保存されること、`PUT /api/habits/:id`で`reminderEnabled`のみを部分更新しても
   他フィールドが保持されることの統合テストを追加する（FR-006, FR-007）。
@@ -89,26 +89,26 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 > **NOTE: これらのテストを先に作成し、失敗することを確認してから実装する**
 
-- [ ] T007 [P] [US1] `tests/unit/domain/reminder.test.ts` に、リマインダー一覧算出
+- [X] T007 [P] [US1] `tests/unit/domain/reminder.test.ts` に、リマインダー一覧算出
   ロジック（`calculateReminderList`: 対象日でない習慣を除外、チェックイン済みの
   習慣を除外、`reminderEnabled`が`false`の習慣を除外、対象が0件の場合は空配列:
   FR-001, FR-002, FR-003, FR-006, FR-008）のユニットテストを作成する。
-- [ ] T008 [P] [US1] `tests/integration/reminders.test.ts` に、
+- [X] T008 [P] [US1] `tests/integration/reminders.test.ts` に、
   `GET /api/reminders`のレスポンスが未チェックインの対象習慣のみを含むこと
   （spec.md Acceptance Scenario 1-3）、対象習慣が1件もない場合は空配列`[]`を返す
   こと（Acceptance Scenario 4）の統合テストを作成する。
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] `src/domain/reminder.ts` に、`calculateReminderList`を実装し、
+- [X] T009 [US1] `src/domain/reminder.ts` に、`calculateReminderList`を実装し、
   T007のテストをパスさせる（`targetDay.ts`の`isTargetDay`を再利用する、
   `research.md`「2.」参照）。
-- [ ] T010 [US1] `src/routes/reminders.ts` を新規作成し、`GET /api/reminders`
+- [X] T010 [US1] `src/routes/reminders.ts` を新規作成し、`GET /api/reminders`
   ハンドラを実装する。`habitRepository.findAll()`・`checkinRepository.findByHabitId()`
   を用いてT009の関数でリマインダー対象を算出し返す。T008のテストをパスさせる。
-- [ ] T011 [US1] `src/app.ts` に、`reminders`ルーターを`/api/reminders`にマウント
+- [X] T011 [US1] `src/app.ts` に、`reminders`ルーターを`/api/reminders`にマウント
   する。
-- [ ] T012 [US1] `public/index.html` と `public/js/habits.js` に、リマインダー
+- [X] T012 [US1] `public/index.html` と `public/js/habits.js` に、リマインダー
   表示セクションを追加し、本日未実行の対象習慣を一覧表示する。対象が0件の場合は
   「今日の習慣はすべて実行済みです」と表示する（`quickstart.md`手順2参照）。
 
@@ -125,7 +125,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T013 [P] [US2] `tests/integration/reminders.test.ts` に、既存の
+- [X] T013 [P] [US2] `tests/integration/reminders.test.ts` に、既存の
   `POST /api/habits/:habitId/checkins`でチェックインした後、
   `GET /api/reminders`の結果からその習慣が消えること（spec.md Acceptance
   Scenario 1, FR-004）の統合テストを追加する。既存のチェックイン検証
@@ -133,7 +133,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] `public/js/habits.js` に、リマインダー一覧の各項目へ
+- [X] T014 [US2] `public/js/habits.js` に、リマインダー一覧の各項目へ
   チェックインボタンを追加し、既存の`POST /api/habits/:habitId/checkins`を
   呼び出す（新規APIは作らない、`research.md`「3.」参照）。チェックイン後は
   リマインダー一覧・習慣一覧・目標一覧・ダッシュボードを再読み込みし、即時
@@ -152,7 +152,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T015 [P] [US3] `tests/integration/reminders.test.ts` に、
+- [X] T015 [P] [US3] `tests/integration/reminders.test.ts` に、
   `PUT /api/habits/:id`で`reminderEnabled`を`false`に更新すると
   `GET /api/reminders`の結果からその習慣が消えること、再度`true`に戻すと
   一覧に戻ること（spec.md Acceptance Scenario 1, 2）、新規登録した習慣は
@@ -161,7 +161,7 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] `public/index.html` と `public/js/habits.js` に、習慣一覧
+- [X] T016 [US3] `public/index.html` と `public/js/habits.js` に、習慣一覧
   （または編集フォーム）へリマインダー表示のON/OFFを切り替えるチェックボックスを
   追加し、`PUT /api/habits/:id`に`reminderEnabled`を送信する。変更後はリマインダー
   一覧を再読み込みし、即時反映する。
@@ -174,10 +174,10 @@ quickstart.md（すべて利用可能）。`001-habit-management`〜`004-reports
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T017 [P] `public/css/styles.css` にリマインダー表示・チェックインボタン・
+- [X] T017 [P] `public/css/styles.css` にリマインダー表示・チェックインボタン・
   ON/OFF切り替えUIの見た目を整える。
-- [ ] T018 `quickstart.md` の全シナリオを手動実行し、動作を確認する。
-- [ ] T019 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
+- [X] T018 `quickstart.md` の全シナリオを手動実行し、動作を確認する。
+- [X] T019 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
   ことを確認する。
 
 ---

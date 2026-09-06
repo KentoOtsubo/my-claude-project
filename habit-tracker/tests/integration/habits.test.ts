@@ -167,4 +167,33 @@ describe("/api/habits", () => {
       expect(res.body[0].currentStreak).toBe(3);
     });
   });
+
+  describe("reminderEnabled (005-reminders)", () => {
+    it("省略した場合はtrueで登録される (FR-007)", async () => {
+      const res = await request(app).post("/api/habits").send({ name: "読書" });
+      expect(res.body.reminderEnabled).toBe(true);
+    });
+
+    it("falseを指定した場合はそのまま保存される (FR-006)", async () => {
+      const res = await request(app)
+        .post("/api/habits")
+        .send({ name: "読書", reminderEnabled: false });
+      expect(res.body.reminderEnabled).toBe(false);
+    });
+
+    it("PUTでreminderEnabledのみを部分更新しても他フィールドが保持される (FR-006)", async () => {
+      const created = await request(app)
+        .post("/api/habits")
+        .send({ name: "読書", category: "study" });
+
+      const res = await request(app)
+        .put(`/api/habits/${created.body.id}`)
+        .send({ reminderEnabled: false });
+
+      expect(res.status).toBe(200);
+      expect(res.body.reminderEnabled).toBe(false);
+      expect(res.body.name).toBe("読書");
+      expect(res.body.category).toBe("study");
+    });
+  });
 });

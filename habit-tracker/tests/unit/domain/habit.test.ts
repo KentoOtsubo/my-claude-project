@@ -18,6 +18,7 @@ describe("normalizeHabitInput", () => {
       frequencyType: "daily",
       weeklyDays: [],
       category: "study",
+      reminderEnabled: true,
     });
   });
 
@@ -60,6 +61,22 @@ describe("normalizeHabitInput", () => {
   it("不正なカテゴリの場合はエラーになる", () => {
     expect(() =>
       normalizeHabitInput({ name: "読書", category: "invalid" as never }),
+    ).toThrow(HabitValidationError);
+  });
+
+  it("reminderEnabledが未指定の場合はtrueになる (FR-007)", () => {
+    const result = normalizeHabitInput({ name: "読書" });
+    expect(result.reminderEnabled).toBe(true);
+  });
+
+  it("reminderEnabledにfalseを指定した場合はそのまま反映される (FR-006)", () => {
+    const result = normalizeHabitInput({ name: "読書", reminderEnabled: false });
+    expect(result.reminderEnabled).toBe(false);
+  });
+
+  it("reminderEnabledに真偽値以外を指定した場合はエラーになる (FR-006)", () => {
+    expect(() =>
+      normalizeHabitInput({ name: "読書", reminderEnabled: "yes" as never }),
     ).toThrow(HabitValidationError);
   });
 });

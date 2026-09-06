@@ -13,6 +13,7 @@ interface HabitRow {
   frequency_type: string;
   weekly_days: string;
   category: string;
+  reminder_enabled: number;
   created_at: string;
   updated_at: string;
 }
@@ -24,6 +25,7 @@ function rowToHabit(row: HabitRow): Habit {
     frequencyType: row.frequency_type as Habit["frequencyType"],
     weeklyDays: JSON.parse(row.weekly_days) as number[],
     category: row.category as Category,
+    reminderEnabled: row.reminder_enabled === 1,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -39,8 +41,8 @@ export class HabitRepository {
 
     this.db
       .prepare(
-        `INSERT INTO habits (id, name, frequency_type, weekly_days, category, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO habits (id, name, frequency_type, weekly_days, category, reminder_enabled, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         id,
@@ -48,6 +50,7 @@ export class HabitRepository {
         normalized.frequencyType,
         JSON.stringify(normalized.weeklyDays),
         normalized.category,
+        normalized.reminderEnabled ? 1 : 0,
         now,
         now,
       );
@@ -88,13 +91,14 @@ export class HabitRepository {
       frequencyType: input.frequencyType ?? existing.frequencyType,
       weeklyDays: input.weeklyDays ?? existing.weeklyDays,
       category: input.category ?? existing.category,
+      reminderEnabled: input.reminderEnabled ?? existing.reminderEnabled,
     };
     const normalized = normalizeHabitInput(merged);
     const updatedAt = new Date().toISOString();
 
     this.db
       .prepare(
-        `UPDATE habits SET name = ?, frequency_type = ?, weekly_days = ?, category = ?, updated_at = ?
+        `UPDATE habits SET name = ?, frequency_type = ?, weekly_days = ?, category = ?, reminder_enabled = ?, updated_at = ?
          WHERE id = ?`,
       )
       .run(
@@ -102,6 +106,7 @@ export class HabitRepository {
         normalized.frequencyType,
         JSON.stringify(normalized.weeklyDays),
         normalized.category,
+        normalized.reminderEnabled ? 1 : 0,
         updatedAt,
         id,
       );

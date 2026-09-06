@@ -8,6 +8,7 @@ export interface Habit {
   frequencyType: FrequencyType;
   weeklyDays: number[];
   category: Category;
+  reminderEnabled: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,6 +18,7 @@ export interface HabitInput {
   frequencyType?: FrequencyType;
   weeklyDays?: number[];
   category?: Category;
+  reminderEnabled?: boolean;
 }
 
 export interface NormalizedHabitInput {
@@ -24,6 +26,7 @@ export interface NormalizedHabitInput {
   frequencyType: FrequencyType;
   weeklyDays: number[];
   category: Category;
+  reminderEnabled: boolean;
 }
 
 export class HabitValidationError extends Error {}
@@ -79,7 +82,14 @@ export function normalizeHabitInput(input: HabitInput): NormalizedHabitInput {
     );
   }
 
-  return { name, frequencyType, weeklyDays, category };
+  const reminderEnabled = input.reminderEnabled ?? true;
+  if (typeof reminderEnabled !== "boolean") {
+    throw new HabitValidationError(
+      "リマインダー表示設定は真偽値で指定してください",
+    );
+  }
+
+  return { name, frequencyType, weeklyDays, category, reminderEnabled };
 }
 
 /** カテゴリ絞り込みクエリパラメータの検証（FR-008）。 */

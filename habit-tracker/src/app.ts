@@ -6,6 +6,7 @@ import { HabitRepository } from "./repositories/habitRepository.js";
 import { createCheckinsRouter } from "./routes/checkins.js";
 import { createGoalsRouter } from "./routes/goals.js";
 import { createHabitsRouter } from "./routes/habits.js";
+import { createRemindersRouter } from "./routes/reminders.js";
 import { createReportsRouter } from "./routes/reports.js";
 
 export interface CreateAppOptions {
@@ -37,6 +38,10 @@ export function createApp(options: CreateAppOptions = {}) {
   app.use(
     "/api/reports",
     createReportsRouter(habitRepository, checkinRepository, goalRepository),
+  );
+  app.use(
+    "/api/reminders",
+    createRemindersRouter(habitRepository, checkinRepository),
   );
 
   return app;

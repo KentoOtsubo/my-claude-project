@@ -13,6 +13,7 @@ const nameInput = document.getElementById("habit-name");
 const frequencyTypeSelect = document.getElementById("habit-frequency-type");
 const weeklyDaysFieldset = document.getElementById("habit-weekly-days");
 const categorySelect = document.getElementById("habit-category");
+const reminderEnabledCheckbox = document.getElementById("habit-reminder-enabled");
 const formError = document.getElementById("habit-form-error");
 const formSubmitButton = document.getElementById("habit-form-submit");
 const formCancelButton = document.getElementById("habit-form-cancel");
@@ -52,6 +53,7 @@ function enterEditMode(habit) {
   weeklyDaysFieldset.hidden = habit.frequencyType !== "weekly";
   setWeeklyDaysInForm(habit.weeklyDays);
   categorySelect.value = habit.category;
+  reminderEnabledCheckbox.checked = habit.reminderEnabled;
   formSubmitButton.textContent = "更新";
   formCancelButton.hidden = false;
   formError.textContent = "";
@@ -179,6 +181,7 @@ async function cancelCheckIn(habitId, checkinId) {
   await loadHabits();
   await loadGoals();
   await loadDashboard();
+  await loadReminders();
 }
 
 async function loadHabits() {
@@ -214,6 +217,7 @@ async function checkInHabit(habitId) {
   await loadHabits();
   await loadGoals();
   await loadDashboard();
+  await loadReminders();
 }
 
 async function deleteHabit(id) {
@@ -229,6 +233,7 @@ async function deleteHabit(id) {
   await loadHabits();
   await loadGoals();
   await loadDashboard();
+  await loadReminders();
 }
 
 const goalForm = document.getElementById("goal-form");
@@ -440,6 +445,36 @@ async function loadDashboard() {
   renderDashboardGoals(dashboard.goals);
 }
 
+const reminderListElement = document.getElementById("reminder-list");
+const reminderListEmptyElement = document.getElementById("reminder-list-empty");
+
+function renderReminderList(reminders) {
+  reminderListElement.innerHTML = "";
+  reminderListEmptyElement.hidden = reminders.length > 0;
+
+  for (const reminder of reminders) {
+    const item = document.createElement("li");
+
+    const label = document.createElement("span");
+    label.textContent = `${reminder.name}（${CATEGORY_LABELS[reminder.category]}）`;
+    item.appendChild(label);
+
+    const checkInButton = document.createElement("button");
+    checkInButton.type = "button";
+    checkInButton.textContent = "チェックイン";
+    checkInButton.addEventListener("click", () => checkInHabit(reminder.id));
+    item.appendChild(checkInButton);
+
+    reminderListElement.appendChild(item);
+  }
+}
+
+async function loadReminders() {
+  const res = await fetch("/api/reminders");
+  const reminders = await res.json();
+  renderReminderList(reminders);
+}
+
 frequencyTypeSelect.addEventListener("change", () => {
   weeklyDaysFieldset.hidden = frequencyTypeSelect.value !== "weekly";
 });
@@ -461,6 +496,7 @@ form.addEventListener("submit", async (event) => {
     frequencyType: frequencyTypeSelect.value,
     weeklyDays: weeklyDaysFromForm(),
     category: categorySelect.value,
+    reminderEnabled: reminderEnabledCheckbox.checked,
   };
 
   const res = editingHabitId
@@ -485,8 +521,10 @@ form.addEventListener("submit", async (event) => {
   await loadHabits();
   await loadGoals();
   await loadDashboard();
+  await loadReminders();
 });
 
 loadHabits();
 loadGoals();
 loadDashboard();
+loadReminders();
