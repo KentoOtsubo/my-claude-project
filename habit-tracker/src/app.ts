@@ -1,3 +1,5 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import express from "express";
 import { createDatabase } from "./repositories/db.js";
 import { CheckInRepository } from "./repositories/checkinRepository.js";
@@ -13,10 +15,16 @@ export interface CreateAppOptions {
   dbPath?: string;
 }
 
+// `express.static("public")`のような相対パス文字列は`process.cwd()`基準で解決
+// されるため、サーバーレス環境（Vercel等）でカレントディレクトリが想定と異なると
+// 見つからなくなる。このモジュール自身の場所を基準にした絶対パスにすることで
+// 実行環境に依存せず解決できるようにする。
+const publicDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "../public");
+
 export function createApp(options: CreateAppOptions = {}) {
   const app = express();
   app.use(express.json());
-  app.use(express.static("public"));
+  app.use(express.static(publicDir));
 
   app.get("/api/health", (_req, res) => {
     res.json({ status: "ok" });
