@@ -46,3 +46,10 @@ export function createApp(options: CreateAppOptions = {}) {
 
   return app;
 }
+
+// Vercel等のサーバーレス環境がこのモジュールを直接呼び出す場合のためのデフォルト
+// export（Node.jsランタイムは default export が関数または http.Server である
+// ことを要求する）。Expressアプリのインスタンス自体は (req, res) => void として
+// 呼び出し可能なため、これで要件を満たす。`createApp()`（名前付きexport）は
+// server.ts・テストからの明示的なDBパス指定付き呼び出しに引き続き使用する。
+export default createApp();
