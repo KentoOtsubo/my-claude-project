@@ -1,24 +1,26 @@
 <!--
 Sync Impact Report
-Version change: [TEMPLATE] → 1.0.0
-Modified principles (initial ratification — all 5 principles newly defined from placeholders):
-  - [PRINCIPLE_1_NAME] → I. テスト駆動開発（Test-First, NON-NEGOTIABLE）
-  - [PRINCIPLE_2_NAME] → II. 仕様駆動ワークフローの遵守
-  - [PRINCIPLE_3_NAME] → III. ドメイン中心アーキテクチャ
-  - [PRINCIPLE_4_NAME] → IV. ドキュメントは日本語で記述
-  - [PRINCIPLE_5_NAME] → V. シンプルさとエビデンスに基づく進行
-Added sections:
-  - 技術スタックの制約（Section 2）
-  - 開発ワークフローと品質ゲート（Section 3）
-  - Governance（改訂手順・バージョニング方針・コンプライアンスレビューを明記）
+Version change: 1.0.0 → 2.0.0
+Modified principles:
+  - III. ドメイン中心アーキテクチャ → データアクセス層の記述を「`node:sqlite`経由」から
+    「Vercel Postgres経由・非同期API」に更新（同期→非同期アーキテクチャへの後方
+    非互換な変更のためMAJORバンプ）
+Added sections: none
 Removed sections: none
+Modified sections:
+  - 技術スタックの制約（Section 2） — `node:sqlite`（ローカルファイル永続化・同期API）を
+    廃止し、Vercel Postgres（クラウド永続化・非同期API、ローカル開発と本番デプロイで
+    共通利用）に置き換え。`better-sqlite3`禁止の記述（ネイティブビルド失敗が理由）は
+    node:sqlite自体を廃止したため削除。
 Templates requiring updates:
-  ✅ .specify/templates/plan-template.md — Constitution Checkゲートは既に汎用的な記述で本憲章と整合（変更不要と確認済み）
+  ✅ .specify/templates/plan-template.md — Constitution Checkゲートは汎用的な記述のため変更不要と確認済み
   ✅ .specify/templates/spec-template.md — 技術非依存の記述のため変更不要と確認済み
-  ✅ .specify/templates/tasks-template.md — 「Tests for User Story N」セクションは条件付き生成の仕組みが既にあり、spec.mdでのTDD明記により実タスク化される設計（原則I）と整合（変更不要と確認済み）
-  ✅ CLAUDE.md — 既に本憲章の内容（TDD自動化・Spec Kit順序・技術スタック・日本語ドキュメント方針）と整合していることを確認済み（変更不要）
-  ✅ .claude/skills/speckit-*/SKILL.md — Claude Code向けスキルとして一貫しており、エージェント固有の古い参照は見つからず（変更不要と確認済み）
-Follow-up TODOs: none
+  ✅ .specify/templates/tasks-template.md — 変更不要と確認済み
+  ✅ CLAUDE.md — 技術スタック節（`node:sqlite`→Vercel Postgres）とSpec Kitロードマップ
+    （`006-persistent-storage`を追記）を更新済み
+  ✅ .claude/skills/speckit-*/SKILL.md — エージェント固有の古い参照は見つからず（変更不要と確認済み）
+Follow-up TODOs: none（データ移行方式・接続情報の管理方法等の技術詳細は
+  `006-persistent-storage`のspec.md/plan.mdで検討する）
 -->
 
 # habit-tracker Constitution
@@ -43,7 +45,8 @@ Follow-up TODOs: none
 機能追加は必ず `/speckit-constitution`（初回のみ）→ `/speckit-specify` → `/speckit-plan` →
 `/speckit-tasks` → `/speckit-implement` の順で進める。この順序をスキップ・逆転しては
 ならない。機能は `001-habit-management` → `002-checkin-tracking` → `003-goal-management` →
-`004-reports-dashboard` → `005-reminders`（任意・ストレッチ）の順で開発する。各段階の
+`004-reports-dashboard` → `005-reminders`（任意・ストレッチ）→
+`006-persistent-storage`（データ永続化基盤の刷新）の順で開発する。各段階の
 成果物（spec.md, plan.md, tasks.md）は、必要に応じて `/speckit-analyze` による整合性チェックを
 経てから次の段階に進む。
 
@@ -54,12 +57,15 @@ Follow-up TODOs: none
 
 ビジネスロジック（ストリーク計算、目標進捗計算など）は `src/domain/` に副作用のない
 純粋関数として実装し、TDDの主対象とする。データアクセスは `src/repositories/`
-（`node:sqlite` 経由）、HTTPハンドリングは `src/routes/` に分離する。`src/app.ts` は
-Expressアプリの組み立て（`createApp()`）のみを担う。ドメイン層はリポジトリ層・ルート層に
-依存してはならない。
+（Vercel Postgres経由、非同期API）、HTTPハンドリングは `src/routes/` に分離する。
+`src/app.ts` はExpressアプリの組み立て（`createApp()`）のみを担う。ドメイン層は
+リポジトリ層・ルート層に依存してはならない。リポジトリ層が非同期APIを前提とする
+ため、ルート層のハンドラは `async`/`await` でリポジトリ呼び出しに対応する。
 
 **Rationale**: 純粋ロジックを分離することでユニットテストが容易になり、TDDの
-Red-Green-Refactorサイクルを高速に回せる。
+Red-Green-Refactorサイクルを高速に回せる。データアクセス層のみを非同期化することで、
+ドメイン層の純粋関数としてのテスト容易性（同期呼び出しで完結する単体テスト）は
+影響を受けない。
 
 ### IV. ドキュメントは日本語で記述
 
@@ -73,10 +79,10 @@ tasks.md, checklist等）はすべて日本語で記述する。コード・コ�
 
 ### V. シンプルさとエビデンスに基づく進行
 
-個人開発の練習プロジェクトであるため、計画された5機能（`001`〜`005`）の範囲を超えた
-過剰設計・将来を見越した抽象化を避ける（YAGNI）。各機能の完了時には成果物・TDD運用ログ・
-整合性チェック結果をエビデンスとして残し、2週間に1回のチーム定例で最低3回共有できる状態を
-維持する。
+個人開発の練習プロジェクトであるため、計画された機能（`001`〜`005`、および永続化基盤の
+刷新である`006`）の範囲を超えた過剰設計・将来を見越した抽象化を避ける（YAGNI）。各機能の
+完了時には成果物・TDD運用ログ・整合性チェック結果をエビデンスとして残し、2週間に1回の
+チーム定例で最低3回共有できる状態を維持する。
 
 **Rationale**: Q2目標③および完了条件（エビデンス提出）を満たすため、進行が可視化・検証
 可能であることを常に優先する。
@@ -85,8 +91,15 @@ tasks.md, checklist等）はすべて日本語で記述する。コード・コ�
 
 - Node.js + TypeScript（ES2022 / NodeNext）
 - Express（REST API）
-- `node:sqlite`（組み込みDatabaseSync）を使用する。`better-sqlite3` は本開発環境
-  （Windows, Python 3.8 32bit）でネイティブビルドに失敗するため使用してはならない
+- データ永続化は **Vercel Postgres** を使用する。ローカル開発（`npm run dev`）と本番
+  デプロイ（Vercel）の両方で同一のVercel Postgresインスタンスに接続し、環境ごとの
+  挙動差異を避ける
+- `node:sqlite`によるローカルファイル永続化は廃止した。理由: サーバーレス環境
+  （Vercel）ではファイルシステムが読み取り専用でありデータを永続化できず、
+  「ローカルNode.jsサーバー（`npm run dev`実行時のみ稼働）」という前提が
+  実運用（デプロイして使い続ける）と両立しなくなったため
+- リポジトリ層（`src/repositories/`）はPostgresクライアントによる非同期API
+  （Promiseベース）を前提とする
 - Vitest（unit/integration）+ Supertest でテストを実装する
 - フロントエンドは `public/` 配下のVanilla HTML/CSS/JS（fetch APIでREST呼び出し）とし、
   フロントエンド用フレームワーク（React等）は導入しない
@@ -110,4 +123,4 @@ PATCH: 文言修正・明確化）、(3) Sync Impact Reportを本ファイル冒
 更新する。すべての `/speckit-plan` 実行はConstitution Checkゲートで本憲章への準拠を検証
 しなければならない。
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-08-07
+**Version**: 2.0.0 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-09-10

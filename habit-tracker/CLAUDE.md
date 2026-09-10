@@ -60,14 +60,15 @@
 ## 技術スタック
 
 - Node.js + TypeScript（ES2022 / NodeNext）
-- Express（REST API）, `node:sqlite`（組み込みDatabaseSync、ネイティブビルド不要）
+- Express（REST API）, データ永続化はVercel Postgres（ローカル開発・本番デプロイ共通、
+  非同期API）
 - Vitest（unit/integration）+ Supertest
 - フロントエンドは `public/` にVanilla HTML/CSS/JS（fetch APIで REST 呼び出し）
 
 ## ディレクトリ
 
 - `src/domain/` — 純粋ロジック（ストリーク計算・目標進捗計算など）。TDDの主対象。
-- `src/repositories/` — `node:sqlite` によるデータアクセス
+- `src/repositories/` — Vercel Postgresによるデータアクセス（非同期API）
 - `src/routes/` — Express ルートハンドラ
 - `src/app.ts` — Express アプリ組み立て（`createApp()`、supertest から import 可能）
 - `src/server.ts` — エントリポイント
@@ -88,4 +89,5 @@
 `### Tests for User Story N` セクションを実タスクとして生成するようにする。
 
 計画: 001-habit-management → 002-checkin-tracking → 003-goal-management →
-004-reports-dashboard → 005-reminders（任意・ストレッチ）
+004-reports-dashboard → 005-reminders（任意・ストレッチ）→
+006-persistent-storage（データ永続化基盤の刷新）
