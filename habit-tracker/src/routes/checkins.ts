@@ -10,25 +10,25 @@ export function createCheckinsRouter(
 ): Router {
   const router = Router({ mergeParams: true });
 
-  router.get<{ habitId: string }>("/", (req, res) => {
-    const habit = habitRepository.findById(req.params.habitId);
+  router.get<{ habitId: string }>("/", async (req, res) => {
+    const habit = await habitRepository.findById(req.params.habitId);
     if (!habit) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
-    res.json(checkinRepository.findByHabitId(habit.id));
+    res.json(await checkinRepository.findByHabitId(habit.id));
   });
 
-  router.post<{ habitId: string }>("/", (req, res) => {
-    const habit = habitRepository.findById(req.params.habitId);
+  router.post<{ habitId: string }>("/", async (req, res) => {
+    const habit = await habitRepository.findById(req.params.habitId);
     if (!habit) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
     try {
-      const checkIn = checkinRepository.create(
+      const checkIn = await checkinRepository.create(
         habit.id,
         req.body ?? {},
         habit.createdAt,
@@ -44,14 +44,14 @@ export function createCheckinsRouter(
     }
   });
 
-  router.delete<{ habitId: string; checkinId: string }>("/:checkinId", (req, res) => {
-    const habit = habitRepository.findById(req.params.habitId);
+  router.delete<{ habitId: string; checkinId: string }>("/:checkinId", async (req, res) => {
+    const habit = await habitRepository.findById(req.params.habitId);
     if (!habit) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
-    const deleted = checkinRepository.delete(habit.id, req.params.checkinId);
+    const deleted = await checkinRepository.delete(habit.id, req.params.checkinId);
     if (!deleted) {
       res.status(404).json({ error: "指定されたチェックインが見つかりません" });
       return;

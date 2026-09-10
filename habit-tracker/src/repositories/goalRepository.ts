@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DatabaseSync } from "node:sqlite";
+import type { DbClient } from "./db.js";
 import type { Goal, GoalInput } from "../domain/goal.js";
 import { normalizeGoalInput } from "../domain/goal.js";
 
@@ -26,19 +26,17 @@ function rowToGoal(row: GoalRow): Goal {
 }
 
 export class GoalRepository {
-  constructor(private readonly db: DatabaseSync) {}
+  constructor(private readonly db: DbClient) {}
 
-  create(habitId: string, input: GoalInput, habitCreatedAt: string): Goal {
+  async create(habitId: string, input: GoalInput, habitCreatedAt: string): Promise<Goal> {
     const normalized = normalizeGoalInput(input, { habitCreatedAt });
     const id = randomUUID();
     const now = new Date().toISOString();
 
-    this.db
-      .prepare(
-        `INSERT INTO goals (id, habit_id, start_date, end_date, target_count, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(
+    await this.db.query(
+      `INSERT INTO goals (id, habit_id, start_date, end_date, target_count, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
         id,
         habitId,
         normalized.startDate,
@@ -46,29 +44,31 @@ export class GoalRepository {
         normalized.targetCount,
         now,
         now,
-      );
+      ],
+    );
 
     return { id, habitId, ...normalized, createdAt: now, updatedAt: now };
   }
 
-  findAll(): Goal[] {
-    const rows = this.db
-      .prepare("SELECT * FROM goals ORDER BY created_at ASC")
-      .all() as unknown as GoalRow[];
+  async findAll(): Promise<Goal[]> {
+    const { rows } = await this.db.query<GoalRow>(
+      "SELECT * FROM goals ORDER BY created_at ASC",
+    );
 
     return rows.map(rowToGoal);
   }
 
-  findById(id: string): Goal | undefined {
-    const row = this.db
-      .prepare("SELECT * FROM goals WHERE id = ?")
-      .get(id) as GoalRow | undefined;
+  async findById(id: string): Promise<Goal | undefined> {
+    const { rows } = await this.db.query<GoalRow>(
+      "SELECT * FROM goals WHERE id = $1",
+      [id],
+    );
 
-    return row ? rowToGoal(row) : undefined;
+    return rows[0] ? rowToGoal(rows[0]) : undefined;
   }
 
-  update(id: string, input: GoalInput, habitCreatedAt: string): Goal | undefined {
-    const existing = this.findById(id);
+  async update(id: string, input: GoalInput, habitCreatedAt: string): Promise<Goal | undefined> {
+    const existing = await this.findById(id);
     if (!existing) {
       return undefined;
     }
@@ -82,18 +82,17 @@ export class GoalRepository {
     const normalized = normalizeGoalInput(merged, { habitCreatedAt });
     const updatedAt = new Date().toISOString();
 
-    this.db
-      .prepare(
-        `UPDATE goals SET start_date = ?, end_date = ?, target_count = ?, updated_at = ?
-         WHERE id = ?`,
-      )
-      .run(
+    await this.db.query(
+      `UPDATE goals SET start_date = $1, end_date = $2, target_count = $3, updated_at = $4
+       WHERE id = $5`,
+      [
         normalized.startDate,
         normalized.endDate,
         normalized.targetCount,
         updatedAt,
         id,
-      );
+      ],
+    );
 
     return {
       id,
@@ -104,8 +103,11 @@ export class GoalRepository {
     };
   }
 
-  delete(id: string): boolean {
-    const result = this.db.prepare("DELETE FROM goals WHERE id = ?").run(id);
-    return Number(result.changes) > 0;
+  async delete(id: string): Promise<boolean> {
+    const { rows } = await this.db.query<{ id: string }>(
+      "DELETE FROM goals WHERE id = $1 RETURNING id",
+      [id],
+    );
+    return rows.length > 0;
   }
 }

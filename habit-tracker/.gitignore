@@ -10,5 +10,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# DB接続文字列等の秘匿情報（006-persistent-storage）
+.env
+.env.local
+
 # エビデンスとして別提出するレポート（Artifactで管理、gitには含めない）
 docs/q1-q2-comparison-report.md

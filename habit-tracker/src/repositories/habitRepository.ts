@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DatabaseSync } from "node:sqlite";
+import type { DbClient } from "./db.js";
 import {
   type Category,
   type Habit,
@@ -13,7 +13,7 @@ interface HabitRow {
   frequency_type: string;
   weekly_days: string;
   category: string;
-  reminder_enabled: number;
+  reminder_enabled: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -25,63 +25,60 @@ function rowToHabit(row: HabitRow): Habit {
     frequencyType: row.frequency_type as Habit["frequencyType"],
     weeklyDays: JSON.parse(row.weekly_days) as number[],
     category: row.category as Category,
-    reminderEnabled: row.reminder_enabled === 1,
+    reminderEnabled: row.reminder_enabled,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 export class HabitRepository {
-  constructor(private readonly db: DatabaseSync) {}
+  constructor(private readonly db: DbClient) {}
 
-  create(input: HabitInput): Habit {
+  async create(input: HabitInput): Promise<Habit> {
     const normalized = normalizeHabitInput(input);
     const id = randomUUID();
     const now = new Date().toISOString();
 
-    this.db
-      .prepare(
-        `INSERT INTO habits (id, name, frequency_type, weekly_days, category, reminder_enabled, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(
+    await this.db.query(
+      `INSERT INTO habits (id, name, frequency_type, weekly_days, category, reminder_enabled, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [
         id,
         normalized.name,
         normalized.frequencyType,
         JSON.stringify(normalized.weeklyDays),
         normalized.category,
-        normalized.reminderEnabled ? 1 : 0,
+        normalized.reminderEnabled,
         now,
         now,
-      );
+      ],
+    );
 
     return { id, ...normalized, createdAt: now, updatedAt: now };
   }
 
-  findAll(category?: Category): Habit[] {
-    const rows = category
-      ? (this.db
-          .prepare(
-            "SELECT * FROM habits WHERE category = ? ORDER BY created_at ASC",
-          )
-          .all(category) as unknown as HabitRow[])
-      : (this.db
-          .prepare("SELECT * FROM habits ORDER BY created_at ASC")
-          .all() as unknown as HabitRow[]);
+  async findAll(category?: Category): Promise<Habit[]> {
+    const { rows } = category
+      ? await this.db.query<HabitRow>(
+          "SELECT * FROM habits WHERE category = $1 ORDER BY created_at ASC",
+          [category],
+        )
+      : await this.db.query<HabitRow>("SELECT * FROM habits ORDER BY created_at ASC");
 
     return rows.map(rowToHabit);
   }
 
-  findById(id: string): Habit | undefined {
-    const row = this.db
-      .prepare("SELECT * FROM habits WHERE id = ?")
-      .get(id) as HabitRow | undefined;
+  async findById(id: string): Promise<Habit | undefined> {
+    const { rows } = await this.db.query<HabitRow>(
+      "SELECT * FROM habits WHERE id = $1",
+      [id],
+    );
 
-    return row ? rowToHabit(row) : undefined;
+    return rows[0] ? rowToHabit(rows[0]) : undefined;
   }
 
-  update(id: string, input: HabitInput): Habit | undefined {
-    const existing = this.findById(id);
+  async update(id: string, input: HabitInput): Promise<Habit | undefined> {
+    const existing = await this.findById(id);
     if (!existing) {
       return undefined;
     }
@@ -96,26 +93,29 @@ export class HabitRepository {
     const normalized = normalizeHabitInput(merged);
     const updatedAt = new Date().toISOString();
 
-    this.db
-      .prepare(
-        `UPDATE habits SET name = ?, frequency_type = ?, weekly_days = ?, category = ?, reminder_enabled = ?, updated_at = ?
-         WHERE id = ?`,
-      )
-      .run(
+    await this.db.query(
+      `UPDATE habits SET name = $1, frequency_type = $2, weekly_days = $3, category = $4,
+       reminder_enabled = $5, updated_at = $6
+       WHERE id = $7`,
+      [
         normalized.name,
         normalized.frequencyType,
         JSON.stringify(normalized.weeklyDays),
         normalized.category,
-        normalized.reminderEnabled ? 1 : 0,
+        normalized.reminderEnabled,
         updatedAt,
         id,
-      );
+      ],
+    );
 
     return { id, ...normalized, createdAt: existing.createdAt, updatedAt };
   }
 
-  delete(id: string): boolean {
-    const result = this.db.prepare("DELETE FROM habits WHERE id = ?").run(id);
-    return Number(result.changes) > 0;
+  async delete(id: string): Promise<boolean> {
+    const { rows } = await this.db.query<{ id: string }>(
+      "DELETE FROM habits WHERE id = $1 RETURNING id",
+      [id],
+    );
+    return rows.length > 0;
   }
 }

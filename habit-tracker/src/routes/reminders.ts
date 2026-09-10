@@ -10,13 +10,16 @@ export function createRemindersRouter(
 ): Router {
   const router = Router();
 
-  router.get("/", (_req, res) => {
+  router.get("/", async (_req, res) => {
     const today = todayJst();
 
-    const habits = habitRepository.findAll().map((habit) => ({
-      ...habit,
-      checkinDates: checkinRepository.findByHabitId(habit.id).map((c) => c.date),
-    }));
+    const allHabits = await habitRepository.findAll();
+    const habits = await Promise.all(
+      allHabits.map(async (habit) => ({
+        ...habit,
+        checkinDates: (await checkinRepository.findByHabitId(habit.id)).map((c) => c.date),
+      })),
+    );
 
     res.json(calculateReminderList(habits, today));
   });

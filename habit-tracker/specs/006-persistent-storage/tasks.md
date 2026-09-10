@@ -39,9 +39,9 @@ NON-NEGOTIABLE）。本機能は既存の振る舞い（`001`〜`005`）を変�
 
 **Purpose**: Vercel Postgres移行に必要な依存関係・環境設定ファイルを整える
 
-- [ ] T001 [P] `npm install @vercel/postgres express-async-errors` と
+- [X] T001 [P] `npm install @vercel/postgres express-async-errors` と
   `npm install -D @electric-sql/pglite` を実行し、`package.json`に追加する。
-- [ ] T002 [P] `.gitignore` に `.env` / `.env.local` を追加する。`.env.example`
+- [X] T002 [P] `.gitignore` に `.env` / `.env.local` を追加する。`.env.example`
   （`DATABASE_URL=`のキーのみ、実際の接続文字列は含めない）をリポジトリルートに
   新規作成する。
 
@@ -64,26 +64,26 @@ NON-NEGOTIABLE）。本機能は既存の振る舞い（`001`〜`005`）を変�
 > 確実に発生させる。この時点で`npm test`・`npm run build`が失敗することを確認
 > したうえで、実装タスク（T011〜T021）に進む。
 
-- [ ] T003 [P] `tests/integration/testDb.ts` を新規作成し、`DbClient`
+- [X] T003 [P] `tests/integration/testDb.ts` を新規作成し、`DbClient`
   インターフェース（`query<T>(text, params?): Promise<{ rows: T[] }>`）の型定義と、
   `@electric-sql/pglite`を使ったテスト用DB生成ヘルパー`createTestDb(options?: {
   dataDir?: string }): Promise<DbClient>`を実装する（`data-model.md`のDbClient
   定義参照）。
-- [ ] T004 [P] `tests/integration/health.test.ts` の`beforeEach`を
+- [X] T004 [P] `tests/integration/health.test.ts` の`beforeEach`を
   `app = await createApp({ db: await createTestDb() })`に更新する。旧`createApp`
   は同期関数かつ`db`オプションを持たないため、`npm run build`が型エラーになる
   ことを確認する（Red）。
-- [ ] T005 [P] `tests/integration/habits.test.ts` の`beforeEach`を同様に更新する
+- [X] T005 [P] `tests/integration/habits.test.ts` の`beforeEach`を同様に更新する
   （FR-003: 既存のAcceptance Scenarios自体は変更しない）。
-- [ ] T006 [P] `tests/integration/checkins.test.ts` の`beforeEach`を同様に
+- [X] T006 [P] `tests/integration/checkins.test.ts` の`beforeEach`を同様に
   更新する（FR-003）。
-- [ ] T007 [P] `tests/integration/goals.test.ts` の`beforeEach`を同様に更新する
+- [X] T007 [P] `tests/integration/goals.test.ts` の`beforeEach`を同様に更新する
   （FR-003）。
-- [ ] T008 [P] `tests/integration/reports.test.ts` の`beforeEach`を同様に
+- [X] T008 [P] `tests/integration/reports.test.ts` の`beforeEach`を同様に
   更新する（FR-003）。
-- [ ] T009 [P] `tests/integration/reminders.test.ts` の`beforeEach`を同様に
+- [X] T009 [P] `tests/integration/reminders.test.ts` の`beforeEach`を同様に
   更新する（FR-003）。
-- [ ] T010 [P] `tests/integration/errorHandling.test.ts` を新規作成し、`query()`が
+- [X] T010 [P] `tests/integration/errorHandling.test.ts` を新規作成し、`query()`が
   常に失敗する（reject する）ダミーの`DbClient`を`createApp({ db: ... })`に注入して
   `POST /api/habits`等を呼び出し、プロセスがクラッシュ・ハングせず`500`と
   `{ error: "..." }`形式のJSONが返ることを検証する（FR-005）。この時点では
@@ -91,24 +91,24 @@ NON-NEGOTIABLE）。本機能は既存の振る舞い（`001`〜`005`）を変�
 
 ### Implementation for Foundational
 
-- [ ] T011 `src/repositories/db.ts` を全面書き換えする。`DbClient`型をexportし、
+- [X] T011 `src/repositories/db.ts` を全面書き換えする。`DbClient`型をexportし、
   `createDatabase(connectionString?: string): Promise<DbClient>`を実装する。
   `connectionString`が指定されていれば`@vercel/postgres`、省略時は
   `@electric-sql/pglite`（インメモリ）を使用する。いずれの場合も、`habits`/
   `checkins`/`goals`テーブルの冪等なスキーマ初期化（`data-model.md`のSQL参照、
   `reminder_enabled`は`BOOLEAN`型）を実行する（FR-001, FR-002, FR-003）。
-- [ ] T012 [P] `src/repositories/habitRepository.ts` を全面書き換えし、`create`・
+- [X] T012 [P] `src/repositories/habitRepository.ts` を全面書き換えし、`create`・
   `findAll`・`findById`・`update`・`delete`のすべてを`Promise`を返す非同期メソッドに
   変更する。SQLをPostgres方言（`?`→`$1, $2...`のプレースホルダ）に変更し、
   `reminder_enabled`がドライバから直接`boolean`で返るため、`rowToHabit()`の
   手動の0/1変換コードを削除する（`research.md`「5.」参照、FR-003）。
-- [ ] T013 [P] `src/repositories/checkinRepository.ts` を全面書き換えし、
+- [X] T013 [P] `src/repositories/checkinRepository.ts` を全面書き換えし、
   `create`・`findByHabitId`・`delete`を非同期メソッドに変更する（SQL方言の変更は
   T012と同様、FR-003）。
-- [ ] T014 [P] `src/repositories/goalRepository.ts` を全面書き換えし、`create`・
+- [X] T014 [P] `src/repositories/goalRepository.ts` を全面書き換えし、`create`・
   `findAll`・`findById`・`update`・`delete`を非同期メソッドに変更する（同上、
   FR-003）。
-- [ ] T015 `src/app.ts` を拡張する。`CreateAppOptions`に`connectionString?: string`
+- [X] T015 `src/app.ts` を拡張する。`CreateAppOptions`に`connectionString?: string`
   （本番・開発用、`server.ts`から使用）と`db?: DbClient`（テスト用の直接注入、
   T003〜T010から使用）を追加する。`createApp()`を`async`関数にし、`options.db`が
   あればそれを使用、なければ`createDatabase(options.connectionString)`（T011）を
@@ -116,17 +116,17 @@ NON-NEGOTIABLE）。本機能は既存の振る舞い（`001`〜`005`）を変�
   登録の後に共通エラーハンドリングミドルウェア（未捕捉エラーを`500 { error: "予期
   しないエラーが発生しました" }`として返す）を追加する（FR-003, FR-005）。
   T004〜T010のテストをパスさせる。
-- [ ] T016 `src/server.ts` を拡張し、`await createApp({ connectionString:
+- [X] T016 `src/server.ts` を拡張し、`await createApp({ connectionString:
   process.env.DATABASE_URL })`のように非同期化されたAPIに対応する（FR-003）。
-- [ ] T017 [P] `src/routes/habits.ts` の各ハンドラを`async`化し、
+- [X] T017 [P] `src/routes/habits.ts` の各ハンドラを`async`化し、
   `repository`・`checkinRepository`の呼び出しに`await`を追加する（FR-003）。
-- [ ] T018 [P] `src/routes/checkins.ts` の各ハンドラを`async`化し、`await`を
+- [X] T018 [P] `src/routes/checkins.ts` の各ハンドラを`async`化し、`await`を
   追加する（同上、FR-003）。
-- [ ] T019 [P] `src/routes/goals.ts` の各ハンドラを`async`化し、`await`を
+- [X] T019 [P] `src/routes/goals.ts` の各ハンドラを`async`化し、`await`を
   追加する（同上、FR-003）。
-- [ ] T020 [P] `src/routes/reports.ts` の`GET /dashboard`ハンドラを`async`化し、
+- [X] T020 [P] `src/routes/reports.ts` の`GET /dashboard`ハンドラを`async`化し、
   複数のリポジトリ呼び出し（`Promise.all`等）に`await`を追加する（FR-003）。
-- [ ] T021 [P] `src/routes/reminders.ts` の`GET /`ハンドラを`async`化し、`await`を
+- [X] T021 [P] `src/routes/reminders.ts` の`GET /`ハンドラを`async`化し、`await`を
   追加する（FR-003）。
 
 **Checkpoint**: 基盤完了。`npm run build`が型エラーなく通り、`npm test`を実行して
@@ -148,7 +148,7 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T022 [P] [US1] `tests/integration/persistence.test.ts` を新規作成する。
+- [X] T022 [P] [US1] `tests/integration/persistence.test.ts` を新規作成する。
   一時ディレクトリ（`node:fs`の`mkdtempSync`等）を`dataDir`として指定した
   `createTestDb({ dataDir })`（T003）で1回目の`DbClient`インスタンスを生成し
   習慣を1件登録・チェックインを1件記録した後、同じディレクトリを指定して
@@ -160,7 +160,7 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 
 ### Implementation for User Story 1
 
-- [ ] T023 [US1] T022のテストを実行し、失敗する場合は`tests/integration/
+- [X] T023 [US1] T022のテストを実行し、失敗する場合は`tests/integration/
   testDb.ts`の`createTestDb()`（T003）のディレクトリ指定時のPGlite初期化処理
   （データディレクトリの生成・スキーマ初期化のタイミング等）を修正してパスさせる。
 
@@ -179,7 +179,7 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T024 [P] [US2] `tests/integration/persistence.test.ts` に、異なる2つの
+- [X] T024 [P] [US2] `tests/integration/persistence.test.ts` に、異なる2つの
   一時ディレクトリ（開発用・本番用を模擬）をそれぞれ指定した`createTestDb({
   dataDir })`（T003）で独立した`DbClient`インスタンスを2つ作成し、一方に習慣を
   登録してももう一方の取得結果には表れないことを検証するテストを追加する
@@ -187,7 +187,7 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] T024のテストを実行し、失敗する場合は`tests/integration/
+- [X] T025 [US2] T024のテストを実行し、失敗する場合は`tests/integration/
   testDb.ts`の`createTestDb()`（T003）の実装を見直してパスさせる（データストア
   間でのデータ混在がないことの保証）。
 - [ ] T026 [US2] **（ユーザー・運用作業、コード変更なし）**: Vercelダッシュボードで
@@ -204,10 +204,10 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T027 `quickstart.md` の全シナリオ（既存機能の回帰確認を含む）を、実際に
+- [X] T027 `quickstart.md` の全シナリオ（既存機能の回帰確認を含む）を、実際に
   ローカル開発用DBに接続した状態で手動実行し、動作を確認する。
-- [ ] T028 `npm run build`（`tsc`）を実行し、型エラーがないことを確認する。
-- [ ] T029 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
+- [X] T028 `npm run build`（`tsc`）を実行し、型エラーがないことを確認する。
+- [X] T029 `npm test` を実行し全テストがパスし、`logs/tdd-run.log` に記録される
   ことを確認する。
 
 ---

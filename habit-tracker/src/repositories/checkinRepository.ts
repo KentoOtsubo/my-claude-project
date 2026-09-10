@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DatabaseSync } from "node:sqlite";
+import type { DbClient } from "./db.js";
 import type { CheckIn, CheckInInput } from "../domain/checkin.js";
 import { normalizeCheckInInput } from "../domain/checkin.js";
 
@@ -20,15 +20,15 @@ function rowToCheckIn(row: CheckInRow): CheckIn {
 }
 
 export class CheckInRepository {
-  constructor(private readonly db: DatabaseSync) {}
+  constructor(private readonly db: DbClient) {}
 
-  create(
+  async create(
     habitId: string,
     input: CheckInInput,
     habitCreatedAt: string,
     today: string,
-  ): CheckIn {
-    const existingDates = this.findByHabitId(habitId).map((c) => c.date);
+  ): Promise<CheckIn> {
+    const existingDates = (await this.findByHabitId(habitId)).map((c) => c.date);
     const normalized = normalizeCheckInInput(input, {
       habitCreatedAt,
       today,
@@ -37,28 +37,29 @@ export class CheckInRepository {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
 
-    this.db
-      .prepare(
-        `INSERT INTO checkins (id, habit_id, date, created_at)
-         VALUES (?, ?, ?, ?)`,
-      )
-      .run(id, habitId, normalized.date, createdAt);
+    await this.db.query(
+      `INSERT INTO checkins (id, habit_id, date, created_at)
+       VALUES ($1, $2, $3, $4)`,
+      [id, habitId, normalized.date, createdAt],
+    );
 
     return { id, habitId, date: normalized.date, createdAt };
   }
 
-  findByHabitId(habitId: string): CheckIn[] {
-    const rows = this.db
-      .prepare("SELECT * FROM checkins WHERE habit_id = ? ORDER BY date DESC")
-      .all(habitId) as unknown as CheckInRow[];
+  async findByHabitId(habitId: string): Promise<CheckIn[]> {
+    const { rows } = await this.db.query<CheckInRow>(
+      "SELECT * FROM checkins WHERE habit_id = $1 ORDER BY date DESC",
+      [habitId],
+    );
 
     return rows.map(rowToCheckIn);
   }
 
-  delete(habitId: string, checkinId: string): boolean {
-    const result = this.db
-      .prepare("DELETE FROM checkins WHERE id = ? AND habit_id = ?")
-      .run(checkinId, habitId);
-    return Number(result.changes) > 0;
+  async delete(habitId: string, checkinId: string): Promise<boolean> {
+    const { rows } = await this.db.query<{ id: string }>(
+      "DELETE FROM checkins WHERE id = $1 AND habit_id = $2 RETURNING id",
+      [checkinId, habitId],
+    );
+    return rows.length > 0;
   }
 }

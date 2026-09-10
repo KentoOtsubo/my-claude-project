@@ -727,3 +727,226 @@
 
 
 
+===== 2026-09-10 19:57:24 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\testDb.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/streak.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/completionRate.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/checkin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/integration/reminders.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 210[2mms[22m[39m
+ [32m✁E[39m tests/integration/checkins.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 274[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/longestStreak.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/integration/goals.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 308[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 313[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/reminder.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+ [32m✁E[39m tests/integration/reports.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 353[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalProgress.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalReviewStatus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/targetDay.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 27[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m      Tests [22m [1m[32m133 passed[39m[22m[90m (133)[39m
+[2m   Start at [22m 19:57:25
+[2m   Duration [22m 2.18s[2m (transform 518ms, setup 0ms, collect 4.05s, tests 1.57s, environment 5ms, prepare 2.52s)[22m
+
+
+
+===== 2026-09-10 19:59:27 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\health.test.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/completionRate.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/streak.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/checkin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/integration/reminders.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 241[2mms[22m[39m
+ [32m✁E[39m tests/integration/checkins.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 259[2mms[22m[39m
+ [32m✁E[39m tests/integration/goals.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 315[2mms[22m[39m
+ [32m✁E[39m tests/integration/reports.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 325[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 325[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/longestStreak.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/reminder.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalProgress.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalReviewStatus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/targetDay.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1673[2mms[22m[39m
+   [33m[2m✁E[22m[39m GET /api/health[2m > [22mreturns status ok [33m1672[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m      Tests [22m [1m[32m133 passed[39m[22m[90m (133)[39m
+[2m   Start at [22m 19:59:28
+[2m   Duration [22m 4.09s[2m (transform 1.01s, setup 0ms, collect 4.53s, tests 3.24s, environment 7ms, prepare 2.89s)[22m
+
+
+
+===== 2026-09-10 20:00:11 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\checkins.test.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/streak.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/completionRate.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/checkin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/integration/reminders.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 250[2mms[22m[39m
+ [32m✁E[39m tests/integration/goals.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 467[2mms[22m[39m
+ [32m✁E[39m tests/integration/reports.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 509[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/longestStreak.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/reminder.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalProgress.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalReviewStatus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/targetDay.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 3121[2mms[22m[39m
+   [33m[2m✁E[22m[39m GET /api/health[2m > [22mreturns status ok [33m3118[2mms[22m[39m
+ [32m✁E[39m tests/integration/checkins.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 23078[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m日付を持E��してチェチE��インを記録できる (Acceptance Scenario 1) [33m3711[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m日付未持E���E場合�E今日の日付で記録されめE(FR-002) [33m1867[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m同じ習�E・同じ日付への重褁E��ェチE��インは400を返す (Acceptance Scenario 2) [33m1444[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m習�Eの作�E日より前�E日付�E400を返す (Acceptance Scenario 3) [33m1380[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m1596[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m習�Eを削除すると紐づくチェチE��インも連鎖削除されめE(FR-014) [33m1630[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22mチェチE��イン履歴を日付�E新しい頁E��返す (User Story 3, Acceptance Scenario 1) [33m1753[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22m履歴ぁE件の場合�E空配�Eを返す [33m2494[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m1906[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22mチェチE��インを取り消せめE(Acceptance Scenario 2) [33m1921[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22m存在しなぁE��ェチE��インIDの場合�E404を返す (Acceptance Scenario 4, FR-013) [33m1665[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m1706[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 29301[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m名前・頻度・カチE��リを指定して登録できる (Acceptance Scenario 1) [33m3754[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m名前未持E���E場合�E400を返し登録されなぁE(Acceptance Scenario 2) [33m1922[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m頻度・カチE��リ未持E���E場合�EチE��ォルト値が適用されめE(Acceptance Scenario 3) [33m1433[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits[2m > [22m習�EぁE件の場合�E空配�Eを返す [33m1356[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m既存�E習�Eを編雁E��きる (Acceptance Scenario 2) [33m1584[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m部刁E��新時�E既存フィールドを保持する (U1: PUT部刁E��新のマ�Eジ方釁E [33m1618[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m存在しないIDの場合�E404を返す (FR-012) [33m1746[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mDELETE /api/habits/:id[2m > [22m既存�E習�Eを削除できる (Acceptance Scenario 3) [33m2425[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mDELETE /api/habits/:id[2m > [22m存在しないIDの場合�E404を返す (FR-012) [33m1911[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22mカチE��リで絞り込める (Acceptance Scenario 1, US3) [33m1914[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22m絞り込みを解除するとすべての習�Eが表示されめE(Acceptance Scenario 2, US3) [33m1688[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22m不正なカチE��リ値の場合�E400を返す (FR-008) [33m1745[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits (currentStreak)[2m > [22mチェチE��インぁE件の場合�EcurrentStreakぁEになめE[33m1389[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits (currentStreak)[2m > [22m連続してチェチE��インしてぁE��場合�EcurrentStreakに反映されめE(Acceptance Scenario 1, US2) [33m1202[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22m省略した場合�Etrueで登録されめE(FR-007) [33m1192[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22mfalseを指定した場合�Eそ�Eまま保存される (FR-006) [33m1183[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22mPUTでreminderEnabledのみを部刁E��新しても他フィールドが保持されめE(FR-006) [33m1235[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m      Tests [22m [1m[32m133 passed[39m[22m[90m (133)[39m
+[2m   Start at [22m 20:00:12
+[2m   Duration [22m 30.48s[2m (transform 697ms, setup 0ms, collect 3.85s, tests 56.82s, environment 6ms, prepare 2.84s)[22m
+
+
+
+===== 2026-09-10 20:01:00 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\goals.test.ts =====
+
+> habit-tracker@0.1.0 test
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/my-claude-project/habit-tracker[39m
+
+ [32m✁E[39m tests/unit/domain/streak.test.ts [2m([22m[2m10 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/completionRate.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/habit.test.ts [2m([22m[2m14 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/checkin.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/integration/reminders.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 271[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/reminder.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+ [32m✁E[39m tests/integration/reports.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 500[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/longestStreak.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalProgress.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/targetDay.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✁E[39m tests/unit/domain/goalReviewStatus.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✁E[39m tests/integration/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 3575[2mms[22m[39m
+   [33m[2m✁E[22m[39m GET /api/health[2m > [22mreturns status ok [33m3574[2mms[22m[39m
+ [32m✁E[39m tests/integration/checkins.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 29970[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m日付を持E��してチェチE��インを記録できる (Acceptance Scenario 1) [33m4135[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m日付未持E���E場合�E今日の日付で記録されめE(FR-002) [33m2225[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m同じ習�E・同じ日付への重褁E��ェチE��インは400を返す (Acceptance Scenario 2) [33m2219[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m習�Eの作�E日より前�E日付�E400を返す (Acceptance Scenario 3) [33m2411[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m2421[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mPOST /api/habits/:habitId/checkins[2m > [22m習�Eを削除すると紐づくチェチE��インも連鎖削除されめE(FR-014) [33m2625[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22mチェチE��イン履歴を日付�E新しい頁E��返す (User Story 3, Acceptance Scenario 1) [33m2439[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22m履歴ぁE件の場合�E空配�Eを返す [33m2298[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mGET /api/habits/:habitId/checkins[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m2049[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22mチェチE��インを取り消せめE(Acceptance Scenario 2) [33m2294[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22m存在しなぁE��ェチE��インIDの場合�E404を返す (Acceptance Scenario 4, FR-013) [33m2382[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits/:habitId/checkins[2m > [22mDELETE /api/habits/:habitId/checkins/:checkinId[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-013) [33m2467[2mms[22m[39m
+ [32m✁E[39m tests/integration/goals.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 32089[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPOST /api/goals[2m > [22m習�Eに対して期間・目標回数を指定して目標を設定できる (Acceptance Scenario 1) [33m4204[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPOST /api/goals[2m > [22m開始日が終亁E��より後�E場合�E400を返す (Acceptance Scenario 2) [33m2253[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPOST /api/goals[2m > [22m目標回数ぁE以下�E場合�E400を返す (Acceptance Scenario 3) [33m2208[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPOST /api/goals[2m > [22m存在しなぁE���EIDの場合�E404を返す (FR-004) [33m2444[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPOST /api/goals[2m > [22m習�Eを削除すると紐づく目標も連鎖削除されめE(FR-014) [33m2379[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mGET /api/goals[2m > [22m目標が0件の場合�E空配�Eを返す [33m2636[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mGET /api/goals[2m > [22mactualCount / progressPercent / achieved が正しく含まれる (Acceptance Scenario 1-3, US2) [33m2451[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mGET /api/goals[2m > [22m同一習�Eで期間が重褁E��る褁E��の目標がそれぞれ独立して進捗を計算すめE(FR-015) [33m2386[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPUT /api/goals/:id[2m > [22m目標回数を変更でき、E��捗が再計算される (Acceptance Scenario 1) [33m2094[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPUT /api/goals/:id[2m > [22m部刁E��新時�E既存フィールドを保持する (001のPUT部刁E��新マ�Eジ方釁E [33m2439[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mPUT /api/goals/:id[2m > [22m存在しなぁE��標IDの場合�E404を返す (FR-013) [33m2410[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mDELETE /api/goals/:id[2m > [22m目標を削除できる (Acceptance Scenario 2) [33m2430[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/goals[2m > [22mDELETE /api/goals/:id[2m > [22m存在しなぁE��標IDの場合�E404を返す (Acceptance Scenario 4, FR-013) [33m1748[2mms[22m[39m
+ [32m✁E[39m tests/integration/habits.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 37154[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m名前・頻度・カチE��リを指定して登録できる (Acceptance Scenario 1) [33m4201[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m名前未持E���E場合�E400を返し登録されなぁE(Acceptance Scenario 2) [33m2281[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPOST /api/habits[2m > [22m頻度・カチE��リ未持E���E場合�EチE��ォルト値が適用されめE(Acceptance Scenario 3) [33m2203[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits[2m > [22m習�EぁE件の場合�E空配�Eを返す [33m2526[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m既存�E習�Eを編雁E��きる (Acceptance Scenario 2) [33m2486[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m部刁E��新時�E既存フィールドを保持する (U1: PUT部刁E��新のマ�Eジ方釁E [33m2815[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mPUT /api/habits/:id[2m > [22m存在しないIDの場合�E404を返す (FR-012) [33m2505[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mDELETE /api/habits/:id[2m > [22m既存�E習�Eを削除できる (Acceptance Scenario 3) [33m2262[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mDELETE /api/habits/:id[2m > [22m存在しないIDの場合�E404を返す (FR-012) [33m2013[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22mカチE��リで絞り込める (Acceptance Scenario 1, US3) [33m2481[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22m絞り込みを解除するとすべての習�Eが表示されめE(Acceptance Scenario 2, US3) [33m2404[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits?category=...[2m > [22m不正なカチE��リ値の場合�E400を返す (FR-008) [33m2392[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits (currentStreak)[2m > [22mチェチE��インぁE件の場合�EcurrentStreakぁEになめE[33m1713[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mGET /api/habits (currentStreak)[2m > [22m連続してチェチE��インしてぁE��場合�EcurrentStreakに反映されめE(Acceptance Scenario 1, US2) [33m1220[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22m省略した場合�Etrueで登録されめE(FR-007) [33m1158[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22mfalseを指定した場合�Eそ�Eまま保存される (FR-006) [33m1303[2mms[22m[39m
+   [33m[2m✁E[22m[39m /api/habits[2m > [22mreminderEnabled (005-reminders)[2m > [22mPUTでreminderEnabledのみを部刁E��新しても他フィールドが保持されめE(FR-006) [33m1184[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m      Tests [22m [1m[32m133 passed[39m[22m[90m (133)[39m
+[2m   Start at [22m 20:01:00
+[2m   Duration [22m 38.38s[2m (transform 669ms, setup 0ms, collect 4.37s, tests 103.65s, environment 5ms, prepare 2.68s)[22m
+
+
+
+===== 2026-09-10 20:01:57 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\reports.test.ts =====
+===== 2026-09-10 20:02:58 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\reminders.test.ts =====
+===== 2026-09-10 20:04:04 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\errorHandling.test.ts =====
+===== 2026-09-10 20:08:46 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\habitRepository.ts =====
+===== 2026-09-10 20:09:47 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\checkinRepository.ts =====
+===== 2026-09-10 20:10:52 | changed: c:\workspace\my-claude-project\habit-tracker\src\repositories\goalRepository.ts =====
+===== 2026-09-10 20:12:30 | changed: c:\workspace\my-claude-project\habit-tracker\src\server.ts =====
+===== 2026-09-10 20:13:30 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\habits.ts =====
+===== 2026-09-10 20:14:25 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\checkins.ts =====
+===== 2026-09-10 20:15:25 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\goals.ts =====
+===== 2026-09-10 20:16:29 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\reports.ts =====
+===== 2026-09-10 20:17:27 | changed: c:\workspace\my-claude-project\habit-tracker\src\routes\reminders.ts =====
+===== 2026-09-10 20:20:59 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\health.test.ts =====
+===== 2026-09-10 20:22:25 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\checkins.test.ts =====
+===== 2026-09-10 20:23:12 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\goals.test.ts =====
+===== 2026-09-10 20:23:52 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\reports.test.ts =====
+===== 2026-09-10 20:24:28 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\reminders.test.ts =====
+===== 2026-09-10 20:25:24 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\persistence.test.ts =====
+===== 2026-09-10 20:26:13 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\persistence.test.ts =====
+===== 2026-09-10 20:26:49 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\persistence.test.ts =====
+===== 2026-09-10 20:30:41 | changed: c:\workspace\my-claude-project\habit-tracker\tests\integration\persistence.test.ts =====

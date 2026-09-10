@@ -14,18 +14,21 @@ export function createHabitsRouter(
 ): Router {
   const router = Router();
 
-  router.get("/", (req, res) => {
+  router.get("/", async (req, res) => {
     try {
       const category = normalizeCategoryFilter(req.query.category);
       const today = todayJst();
-      const habits = repository.findAll(category).map((habit) => ({
-        ...habit,
-        currentStreak: calculateCurrentStreak(
-          habit,
-          checkinRepository.findByHabitId(habit.id).map((c) => c.date),
-          today,
-        ),
-      }));
+      const allHabits = await repository.findAll(category);
+      const habits = await Promise.all(
+        allHabits.map(async (habit) => ({
+          ...habit,
+          currentStreak: calculateCurrentStreak(
+            habit,
+            (await checkinRepository.findByHabitId(habit.id)).map((c) => c.date),
+            today,
+          ),
+        })),
+      );
       res.json(habits);
     } catch (error) {
       if (error instanceof HabitValidationError) {
@@ -36,9 +39,9 @@ export function createHabitsRouter(
     }
   });
 
-  router.post("/", (req, res) => {
+  router.post("/", async (req, res) => {
     try {
-      const habit = repository.create(req.body ?? {});
+      const habit = await repository.create(req.body ?? {});
       res.status(201).json(habit);
     } catch (error) {
       if (error instanceof HabitValidationError) {
@@ -49,9 +52,9 @@ export function createHabitsRouter(
     }
   });
 
-  router.put("/:id", (req, res) => {
+  router.put("/:id", async (req, res) => {
     try {
-      const habit = repository.update(req.params.id, req.body ?? {});
+      const habit = await repository.update(req.params.id, req.body ?? {});
       if (!habit) {
         res.status(404).json({ error: "指定された習慣が見つかりません" });
         return;
@@ -66,8 +69,8 @@ export function createHabitsRouter(
     }
   });
 
-  router.delete("/:id", (req, res) => {
-    const deleted = repository.delete(req.params.id);
+  router.delete("/:id", async (req, res) => {
+    const deleted = await repository.delete(req.params.id);
     if (!deleted) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;

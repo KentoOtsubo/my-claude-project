@@ -18,13 +18,16 @@ export function createReportsRouter(
 ): Router {
   const router = Router();
 
-  router.get("/dashboard", (_req, res) => {
+  router.get("/dashboard", async (_req, res) => {
     const today = todayJst();
 
-    const habitsWithCheckins = habitRepository.findAll().map((habit) => ({
-      habit,
-      checkinDates: checkinRepository.findByHabitId(habit.id).map((c) => c.date),
-    }));
+    const allHabits = await habitRepository.findAll();
+    const habitsWithCheckins = await Promise.all(
+      allHabits.map(async (habit) => ({
+        habit,
+        checkinDates: (await checkinRepository.findByHabitId(habit.id)).map((c) => c.date),
+      })),
+    );
 
     const habits = habitsWithCheckins.map(({ habit, checkinDates }) => ({
       habitId: habit.id,
@@ -61,17 +64,22 @@ export function createReportsRouter(
       };
     });
 
-    const goals = goalRepository.findAll().map((goal) => {
-      const checkinDates = checkinRepository.findByHabitId(goal.habitId).map((c) => c.date);
-      const review = determineGoalReviewStatus(goal, checkinDates, today);
-      return {
-        goalId: goal.id,
-        habitId: goal.habitId,
-        status: review.status,
-        actualCount: review.actualCount,
-        progressPercent: review.progressPercent,
-      };
-    });
+    const allGoals = await goalRepository.findAll();
+    const goals = await Promise.all(
+      allGoals.map(async (goal) => {
+        const checkinDates = (await checkinRepository.findByHabitId(goal.habitId)).map(
+          (c) => c.date,
+        );
+        const review = determineGoalReviewStatus(goal, checkinDates, today);
+        return {
+          goalId: goal.id,
+          habitId: goal.habitId,
+          status: review.status,
+          actualCount: review.actualCount,
+          progressPercent: review.progressPercent,
+        };
+      }),
+    );
 
     res.json({ habits, categories, goals });
   });

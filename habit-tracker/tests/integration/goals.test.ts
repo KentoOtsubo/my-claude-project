@@ -1,14 +1,21 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import type { Express } from "express";
 import { createApp } from "../../src/app.js";
 import { todayJst as today } from "../../src/domain/clock.js";
+import { createTestDb, resetTestDb, type DbClient } from "./testDb.js";
 
 describe("/api/goals", () => {
+  let db: DbClient;
   let app: Express;
 
-  beforeEach(() => {
-    app = createApp({ dbPath: ":memory:" });
+  beforeAll(async () => {
+    db = await createTestDb();
+  });
+
+  beforeEach(async () => {
+    await resetTestDb(db);
+    app = await createApp({ db });
   });
 
   async function createHabit(overrides: Record<string, unknown> = {}) {

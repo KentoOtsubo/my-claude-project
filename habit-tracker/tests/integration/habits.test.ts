@@ -1,13 +1,20 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import type { Express } from "express";
 import { createApp } from "../../src/app.js";
+import { createTestDb, resetTestDb, type DbClient } from "./testDb.js";
 
 describe("/api/habits", () => {
+  let db: DbClient;
   let app: Express;
 
-  beforeEach(() => {
-    app = createApp({ dbPath: ":memory:" });
+  beforeAll(async () => {
+    db = await createTestDb();
+  });
+
+  beforeEach(async () => {
+    await resetTestDb(db);
+    app = await createApp({ db });
   });
 
   afterEach(() => {

@@ -12,26 +12,29 @@ export function createGoalsRouter(
 ): Router {
   const router = Router();
 
-  router.get("/", (_req, res) => {
-    const goals = goalRepository.findAll().map((goal) => {
-      const checkinDates = checkinRepository
-        .findByHabitId(goal.habitId)
-        .map((c) => c.date);
-      return { ...goal, ...calculateGoalProgress(goal, checkinDates) };
-    });
+  router.get("/", async (_req, res) => {
+    const allGoals = await goalRepository.findAll();
+    const goals = await Promise.all(
+      allGoals.map(async (goal) => {
+        const checkinDates = (await checkinRepository.findByHabitId(goal.habitId)).map(
+          (c) => c.date,
+        );
+        return { ...goal, ...calculateGoalProgress(goal, checkinDates) };
+      }),
+    );
     res.json(goals);
   });
 
-  router.post("/", (req, res) => {
+  router.post("/", async (req, res) => {
     const { habitId } = req.body ?? {};
-    const habit = habitRepository.findById(habitId);
+    const habit = await habitRepository.findById(habitId);
     if (!habit) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
     try {
-      const goal = goalRepository.create(habitId, req.body ?? {}, habit.createdAt);
+      const goal = await goalRepository.create(habitId, req.body ?? {}, habit.createdAt);
       res.status(201).json(goal);
     } catch (error) {
       if (error instanceof GoalValidationError) {
@@ -42,21 +45,21 @@ export function createGoalsRouter(
     }
   });
 
-  router.put("/:id", (req, res) => {
-    const existing = goalRepository.findById(req.params.id);
+  router.put("/:id", async (req, res) => {
+    const existing = await goalRepository.findById(req.params.id);
     if (!existing) {
       res.status(404).json({ error: "指定された目標が見つかりません" });
       return;
     }
 
-    const habit = habitRepository.findById(existing.habitId);
+    const habit = await habitRepository.findById(existing.habitId);
     if (!habit) {
       res.status(404).json({ error: "指定された習慣が見つかりません" });
       return;
     }
 
     try {
-      const goal = goalRepository.update(req.params.id, req.body ?? {}, habit.createdAt);
+      const goal = await goalRepository.update(req.params.id, req.body ?? {}, habit.createdAt);
       res.json(goal);
     } catch (error) {
       if (error instanceof GoalValidationError) {
@@ -67,8 +70,8 @@ export function createGoalsRouter(
     }
   });
 
-  router.delete("/:id", (req, res) => {
-    const deleted = goalRepository.delete(req.params.id);
+  router.delete("/:id", async (req, res) => {
+    const deleted = await goalRepository.delete(req.params.id);
     if (!deleted) {
       res.status(404).json({ error: "指定された目標が見つかりません" });
       return;
