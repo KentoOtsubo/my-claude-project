@@ -190,7 +190,7 @@ Red→Greenの完了）。ここまで完了すればユーザーストーリー
 - [X] T025 [US2] T024のテストを実行し、失敗する場合は`tests/integration/
   testDb.ts`の`createTestDb()`（T003）の実装を見直してパスさせる（データストア
   間でのデータ混在がないことの保証）。
-- [ ] T026 [US2] **（ユーザー・運用作業、コード変更なし）**: Vercelダッシュボードで
+- [X] T026 [US2] **（ユーザー・運用作業、コード変更なし）**: Vercelダッシュボードで
   Development用・Production用の2つのVercel Postgresデータベースを作成し、
   それぞれの接続文字列をローカルの`.env`（`DATABASE_URL`）とVercelの環境変数に
   設定する。この作業はVercelアカウントへのアクセスが必要なため、ユーザー自身が
