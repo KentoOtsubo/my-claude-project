@@ -100,6 +100,28 @@ export async function createDatabase(connectionString?: string): Promise<DbClien
 いずれの実装も、起動時（`createDatabase()`が返す前）に上記3テーブルのスキーマ
 初期化（冪等なDDL実行）を完了させる。
 
+## `createApp()`へのDbClient注入
+
+`src/app.ts`の`CreateAppOptions`に、本番・開発用の接続文字列と、テスト用の
+`DbClient`直接注入の両方を受け付けるフィールドを追加する。
+
+```ts
+export interface CreateAppOptions {
+  connectionString?: string; // 本番・開発用（server.tsが使用）
+  db?: DbClient;              // テスト用の直接注入（createTestDb()の結果を渡す）
+}
+
+export async function createApp(options: CreateAppOptions = {}) {
+  const db = options.db ?? await createDatabase(options.connectionString);
+  // ...
+}
+```
+
+`options.db`が指定されればそれをそのまま使用し、`createDatabase()`（接続文字列の
+解釈やPGliteフォールバック）を経由しない。これにより、テストは`createTestDb()`
+（`tests/integration/testDb.ts`）で生成した`DbClient`を`createApp({ db })`として
+直接渡せる。
+
 ## APIレスポンスへの影響
 
 なし。`GET /api/habits`等のレスポンスに含まれる`reminderEnabled`フィールドの型は

@@ -22,9 +22,20 @@ Development環境ごとに自動設定される`POSTGRES_URL`系の環境変数�
 ## 2. 自動テスト用のDB接続方式
 
 **Decision**: 統合テスト（`tests/integration/*.test.ts`）では、`@electric-sql/pglite`
-（WASMで動作するインプロセスのPostgres互換エンジン）を使用する。各テストファイルの
-`beforeEach`で新しいPGliteインスタンスを生成し、実データベースへのネットワーク接続を
-一切行わない。
+（WASMで動作するインプロセスのPostgres互換エンジン）を使用する。実データベースへの
+ネットワーク接続は一切行わない。用途に応じて2つのモードを使い分ける。
+
+- 通常の機能テスト（`001`〜`005`の既存回帰確認、User Story共通の検証）: 各
+  テストファイルの`beforeEach`でディレクトリを指定しないインメモリのPGlite
+  インスタンス（`new PGlite()`相当）を生成し、テストごとに独立した空のDBから
+  開始する（既存の`:memory:`利用と同じ位置付け）。
+- 永続性そのものを検証するテスト（User Story 1の`persistence.test.ts`「同じ
+  データストアへの再接続」、User Story 2の「別々のデータストア」）: `node:fs`の
+  `mkdtempSync`等で作成した一時ディレクトリを指定し、ファイルシステムに永続化
+  するPGliteインスタンス（`new PGlite(dataDir)`相当）を生成する。同一
+  ディレクトリを指定して複数回インスタンス化することで「プロセス再起動後も
+  同じデータが読める」ことを、ネットワーク接続や実際のVercel Postgresを使わずに
+  検証できる。テスト終了後は一時ディレクトリを削除する。
 
 **Rationale**: 本プロジェクトの`PostToolUseフック`は`src/**/*.ts`・`tests/**/*.ts`の
 変更のたびに`npm test`を自動実行する仕組みであり（憲章原則I）、テストが遅い・
