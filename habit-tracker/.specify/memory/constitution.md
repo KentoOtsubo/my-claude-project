@@ -1,5 +1,23 @@
 <!--
 Sync Impact Report
+Version change: 2.0.0 → 2.0.1
+Modified principles: none（原則の再定義なし）
+Added sections: none
+Removed sections: none
+Modified sections:
+  - II. 仕様駆動ワークフローの遵守 — ロードマップに`007-ui-navigation`
+    （画面遷移UI：トップ・タブ・一覧・登録編集の分割）を追記。既存原則の意味は
+    変更しないためPATCHバンプ。
+Templates requiring updates:
+  ✅ .specify/templates/plan-template.md — 変更不要と確認済み
+  ✅ .specify/templates/spec-template.md — 変更不要と確認済み
+  ✅ .specify/templates/tasks-template.md — 変更不要と確認済み
+  ✅ CLAUDE.md — Spec Kitロードマップに`007-ui-navigation`を追記
+Follow-up TODOs: none
+-->
+
+<!--
+Sync Impact Report (previous amendment)
 Version change: 1.0.0 → 2.0.0
 Modified principles:
   - III. ドメイン中心アーキテクチャ → データアクセス層の記述を「`node:sqlite`経由」から
@@ -46,7 +64,8 @@ Follow-up TODOs: none（データ移行方式・接続情報の管理方法等�
 `/speckit-tasks` → `/speckit-implement` の順で進める。この順序をスキップ・逆転しては
 ならない。機能は `001-habit-management` → `002-checkin-tracking` → `003-goal-management` →
 `004-reports-dashboard` → `005-reminders`（任意・ストレッチ）→
-`006-persistent-storage`（データ永続化基盤の刷新）の順で開発する。各段階の
+`006-persistent-storage`（データ永続化基盤の刷新）→
+`007-ui-navigation`（画面遷移UI：トップ・タブ・一覧・登録編集の分割）の順で開発する。各段階の
 成果物（spec.md, plan.md, tasks.md）は、必要に応じて `/speckit-analyze` による整合性チェックを
 経てから次の段階に進む。
 
@@ -79,8 +98,9 @@ tasks.md, checklist等）はすべて日本語で記述する。コード・コ�
 
 ### V. シンプルさとエビデンスに基づく進行
 
-個人開発の練習プロジェクトであるため、計画された機能（`001`〜`005`、および永続化基盤の
-刷新である`006`）の範囲を超えた過剰設計・将来を見越した抽象化を避ける（YAGNI）。各機能の
+個人開発の練習プロジェクトであるため、計画された機能（`001`〜`005`、永続化基盤の
+刷新である`006`、画面遷移UIの`007`）の範囲を超えた過剰設計・将来を見越した抽象化を
+避ける（YAGNI）。各機能の
 完了時には成果物・TDD運用ログ・整合性チェック結果をエビデンスとして残し、2週間に1回の
 チーム定例で最低3回共有できる状態を維持する。
 
@@ -123,4 +143,4 @@ PATCH: 文言修正・明確化）、(3) Sync Impact Reportを本ファイル冒
 更新する。すべての `/speckit-plan` 実行はConstitution Checkゲートで本憲章への準拠を検証
 しなければならない。
 
-**Version**: 2.0.0 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-09-10
+**Version**: 2.0.1 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-09-13

@@ -90,4 +90,5 @@
 
 計画: 001-habit-management → 002-checkin-tracking → 003-goal-management →
 004-reports-dashboard → 005-reminders（任意・ストレッチ）→
-006-persistent-storage（データ永続化基盤の刷新）
+006-persistent-storage（データ永続化基盤の刷新）→
+007-ui-navigation（画面遷移UI：トップ・タブ・一覧・登録編集の分割）
