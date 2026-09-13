@@ -38,7 +38,7 @@ description: "Task list template for feature implementation"
 
 **Purpose**: モジュール分割の受け皿となるディレクトリを準備する
 
-- [ ] T001 `public/js/views/` ディレクトリを作成する（画面単位のJSモジュールの
+- [X] T001 `public/js/views/` ディレクトリを作成する（画面単位のJSモジュールの
   格納先、`plan.md`のProject Structure参照）。
 
 ---
@@ -51,18 +51,18 @@ description: "Task list template for feature implementation"
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 （各ビューは`app.js`のタブ切り替え機構と`api.js`/`format.js`の共通処理に依存する）
 
-- [ ] T002 [P] `public/js/format.js` を新規作成し、既存`public/js/habits.js`から
+- [X] T002 [P] `public/js/format.js` を新規作成し、既存`public/js/habits.js`から
   表示用の共通ヘルパー（`FREQUENCY_LABELS`, `CATEGORY_LABELS`, `WEEKDAY_LABELS`,
   `JST_OFFSET_MS`, `todayString`, `dayOfWeek`, `isTargetDay`, `formatHabit`,
   `formatGoalPeriod`）を抽出してexportする（`research.md`「2.」参照、ロジックの
   変更は行わない）。
-- [ ] T003 [P] `public/js/api.js` を新規作成し、既存`public/js/habits.js`内の
+- [X] T003 [P] `public/js/api.js` を新規作成し、既存`public/js/habits.js`内の
   `fetch`呼び出しを、リソース単位の関数（習慣の一覧取得・作成・更新・削除、
   チェックインの作成・取得・削除、目標の一覧取得・作成・更新・削除、
   ダッシュボード取得、リマインダー取得）として整理してexportする（既存の
   リクエスト/レスポンス形式は変更しない、`plan.md`のTechnical Context「Primary
   Dependencies」参照）。
-- [ ] T004 `public/index.html` を再構成する。常時表示のタブメニュー（`nav`要素、
+- [X] T004 `public/index.html` を再構成する。常時表示のタブメニュー（`nav`要素、
   「ホーム」「習慣」「目標」「ダッシュボード」の4ボタン）を追加し、
   `<section id="view-home">` `<section id="view-habit-list">`
   `<section id="view-habit-form">` `<section id="view-goal-list">`
@@ -75,13 +75,13 @@ description: "Task list template for feature implementation"
   避けるため、ここでは枠組みのみ用意する）。`view-home`以外の`section`には
   初期状態で`hidden`属性を付与する。`<script type="module">`の参照先は
   `js/app.js`に変更する。
-- [ ] T005 `public/js/app.js` を新規作成し、`showView(name)`関数（指定した
+- [X] T005 `public/js/app.js` を新規作成し、`showView(name)`関数（指定した
   `<section>`以外のすべてに`hidden`を設定し、指定した`<section>`の`hidden`を
   解除する）と、タブメニュー4ボタンのクリックハンドラ（`home` /
   `habit-list` / `goal-list` / `dashboard`への切替）を実装する。この時点では
   各ビューの中身は空実装のプレースホルダで構わない（各ユーザーストーリーの
   フェーズで実装する）。初期表示は`home`とする。
-- [ ] T006 [P] `public/css/styles.css` に、タブメニューの見た目とアクティブタブの
+- [X] T006 [P] `public/css/styles.css` に、タブメニューの見た目とアクティブタブの
   強調表示のスタイルを追加する。
 
 **Checkpoint**: タブ切り替えの土台が完成。ブラウザでアプリを開き、4つのタブを
@@ -102,7 +102,7 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] `public/index.html`の`#view-home`に、既存のリマインダー
+- [X] T007 [US1] `public/index.html`の`#view-home`に、既存のリマインダー
   セクションのマークアップ（`reminder-list`等）と、新規の簡易サマリー表示
   要素を配置する。あわせて`public/js/views/home.js`を新規作成し、
   `initHomeView()` / `refreshHomeView()`を実装する。リマインダー一覧
@@ -111,9 +111,9 @@ description: "Task list template for feature implementation"
   endDate`でフィルタしたカウント、`research.md`「4.」参照）を`#view-home`に
   描画する。リマインダーからのその場チェックイン（既存`005-reminders`の機能）
   もここに実装する。
-- [ ] T008 [US1] `public/js/app.js` を拡張し、「ホーム」タブがアクティブになる
+- [X] T008 [US1] `public/js/app.js` を拡張し、「ホーム」タブがアクティブになる
   たび（初期表示時を含む）に`refreshHomeView()`を呼び出すよう配線する。
-- [ ] T009 [US1] `quickstart.md`手順2（User Story 1）を手動実行し、トップページの
+- [X] T009 [US1] `quickstart.md`手順2（User Story 1）を手動実行し、トップページの
   表示内容とタブ切り替え・「ホーム」への復帰を検証する。
 
 **Checkpoint**: User Story 1が単独で完全に動作・検証可能（MVP）。
@@ -130,23 +130,23 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] `public/js/views/habitList.js` を新規作成し、既存
+- [X] T010 [US2] `public/js/views/habitList.js` を新規作成し、既存
   `public/js/habits.js`の習慣一覧描画・カテゴリ絞り込み・チェックイン・削除
   ロジックを移設し、`initHabitListView()` / `refreshHabitListView()`として
   `#view-habit-list`に実装する。「新規登録」ボタンと各行の「編集」ボタンから
   `showView('habit-form')`を呼び出し、対応するモード（新規/編集）で
   `habitForm.js`を初期化する。
-- [ ] T011 [US2] `public/js/views/habitForm.js` を新規作成し、既存
+- [X] T011 [US2] `public/js/views/habitForm.js` を新規作成し、既存
   `public/js/habits.js`の習慣登録・編集フォームロジック（新規/編集モード共通、
   頻度・曜日チェックボックス・カテゴリ・リマインダー表示チェックボックス）を
   移設し、`initHabitFormView(mode, habit?)`として`#view-habit-form`に実装する。
   登録・更新の成功時、およびキャンセル操作時のいずれも`showView('habit-list')`
   を呼び出し、`refreshHabitListView()`で一覧を再読み込みする（spec.md FR-006）。
-- [ ] T012 [US2] `public/index.html`の`#view-habit-list` / `#view-habit-form`
+- [X] T012 [US2] `public/index.html`の`#view-habit-list` / `#view-habit-form`
   セクションに、新規登録・編集・登録（更新）・キャンセルの各ボタン/フォーム要素を
   配置する（既存`index.html`の習慣一覧・習慣登録フォームのマークアップを移設・
   再配置する）。
-- [ ] T013 [US2] `quickstart.md`手順3（User Story 2）を手動実行し、習慣一覧⇄
+- [X] T013 [US2] `quickstart.md`手順3（User Story 2）を手動実行し、習慣一覧⇄
   登録編集画面の遷移（新規登録・編集・キャンセル）を検証する。
 
 **Checkpoint**: User Story 1・2がともに単独で動作する。
@@ -163,22 +163,22 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T014 [US3] `public/js/views/goalList.js` を新規作成し、既存
+- [X] T014 [US3] `public/js/views/goalList.js` を新規作成し、既存
   `public/js/habits.js`の目標一覧描画・削除ロジックを移設し、
   `initGoalListView()` / `refreshGoalListView()`として`#view-goal-list`に
   実装する。「新規登録」ボタンと各行の「編集」ボタンから`showView('goal-form')`
   を呼び出し、対応するモード（新規/編集）で`goalForm.js`を初期化する。
-- [ ] T015 [US3] `public/js/views/goalForm.js` を新規作成し、既存
+- [X] T015 [US3] `public/js/views/goalForm.js` を新規作成し、既存
   `public/js/habits.js`の目標登録・編集フォームロジック（対象習慣選択・開始日・
   終了日・目標回数、新規/編集モード共通）を移設し、
   `initGoalFormView(mode, goal?)`として`#view-goal-form`に実装する。登録・
   更新の成功時、およびキャンセル操作時のいずれも`showView('goal-list')`を
   呼び出し、`refreshGoalListView()`で一覧を再読み込みする（spec.md FR-011）。
-- [ ] T016 [US3] `public/index.html`の`#view-goal-list` / `#view-goal-form`
+- [X] T016 [US3] `public/index.html`の`#view-goal-list` / `#view-goal-form`
   セクションに、新規登録・編集・登録（更新）・キャンセルの各ボタン/フォーム要素を
   配置する（既存`index.html`の目標一覧・目標設定フォームのマークアップを移設・
   再配置する）。
-- [ ] T017 [US3] `quickstart.md`手順4（User Story 3）を手動実行し、目標一覧⇄
+- [X] T017 [US3] `quickstart.md`手順4（User Story 3）を手動実行し、目標一覧⇄
   登録編集画面の遷移（新規登録・編集・キャンセル）を検証する。
 
 **Checkpoint**: User Story 1・2・3がすべて単独で動作する。
@@ -195,14 +195,14 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 4
 
-- [ ] T018 [US4] `public/index.html`の`#view-dashboard`に、既存のダッシュボード
+- [X] T018 [US4] `public/index.html`の`#view-dashboard`に、既存のダッシュボード
   セクションのマークアップ（見出し・注釈文・各リスト要素）を移設する。あわせて
   `public/js/views/dashboard.js`を新規作成し、既存`public/js/habits.js`の
   ダッシュボード描画ロジック（習慣ごと・カテゴリ別の実施率、目標の振り返り）を
   移設し、`refreshDashboardView()`として`#view-dashboard`に実装する。
-- [ ] T019 [US4] `public/js/app.js` を拡張し、「ダッシュボード」タブが
+- [X] T019 [US4] `public/js/app.js` を拡張し、「ダッシュボード」タブが
   アクティブになるたびに`refreshDashboardView()`を呼び出すよう配線する。
-- [ ] T020 [US4] `quickstart.md`手順5（User Story 4）を手動実行し、ダッシュ
+- [X] T020 [US4] `quickstart.md`手順5（User Story 4）を手動実行し、ダッシュ
   ボードタブの表示内容が`004-reports-dashboard`と同一であることを検証する。
 
 **Checkpoint**: すべてのユーザーストーリーが独立に動作する。
@@ -213,15 +213,15 @@ description: "Task list template for feature implementation"
 
 **Purpose**: 全ユーザーストーリーに共通する仕上げ
 
-- [ ] T021 全ビューへの移設が完了したことを確認した上で、`public/js/habits.js`を
+- [X] T021 全ビューへの移設が完了したことを確認した上で、`public/js/habits.js`を
   削除する（`app.js` / `api.js` / `format.js` / `views/*.js`に完全に置き換え
   済みであることを確認してから実施する）。
-- [ ] T022 `quickstart.md`手順6（エッジケース: 未登録状態・進行中の目標0件・
+- [X] T022 `quickstart.md`手順6（エッジケース: 未登録状態・進行中の目標0件・
   未保存離脱）を手動実行し、動作を確認する。
-- [ ] T023 `npm test`を実行し、バックエンドAPIを変更していないため既存18
+- [X] T023 `npm test`を実行し、バックエンドAPIを変更していないため既存18
   ファイル・137件がすべて引き続きパスすることを確認する（回帰確認、
   `logs/tdd-run.log`への記録も確認する）。
-- [ ] T024 `quickstart.md`手順7に沿って、`001`〜`005`の既存機能（カテゴリ絞り込み・
+- [X] T024 `quickstart.md`手順7に沿って、`001`〜`005`の既存機能（カテゴリ絞り込み・
   チェックイン履歴・目標進捗・ダッシュボード・リマインダー設定）が画面分割後も
   ブラウザ上で従来通り動作することを手動確認する。
 

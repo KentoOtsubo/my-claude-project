@@ -9,14 +9,46 @@
   <body>
     <h1>習慣トラッカー</h1>
 
-    <section>
-      <h2>リマインダー</h2>
+    <nav class="tab-nav">
+      <button type="button" class="tab-button" data-view="home">ホーム</button>
+      <button type="button" class="tab-button" data-view="habit-list">習慣</button>
+      <button type="button" class="tab-button" data-view="goal-list">目標</button>
+      <button type="button" class="tab-button" data-view="dashboard">ダッシュボード</button>
+    </nav>
+
+    <section id="view-home">
+      <h2>ホーム</h2>
+      <div class="home-summary">
+        <p>習慣: <strong id="home-habit-count">0</strong>件</p>
+        <p>進行中の目標: <strong id="home-goal-count">0</strong>件</p>
+      </div>
+
+      <h3>リマインダー</h3>
       <p id="reminder-list-empty" hidden>今日の習慣はすべて実行済みです</p>
       <ul id="reminder-list"></ul>
     </section>
 
-    <section>
-      <h2>習慣を登録</h2>
+    <section id="view-habit-list" hidden>
+      <h2>習慣一覧</h2>
+      <button type="button" id="habit-list-new-button">新規登録</button>
+
+      <label>
+        カテゴリで絞り込み
+        <select id="habit-category-filter">
+          <option value="">すべて</option>
+          <option value="uncategorized">未分類</option>
+          <option value="health">健康</option>
+          <option value="work">仕事</option>
+          <option value="study">学習</option>
+          <option value="other">その他</option>
+        </select>
+      </label>
+      <ul id="habit-list"></ul>
+      <p id="habit-list-empty" hidden>登録されている習慣がありません</p>
+    </section>
+
+    <section id="view-habit-form" hidden>
+      <h2 id="habit-form-heading">習慣を登録</h2>
       <form id="habit-form">
         <label>
           名前
@@ -59,30 +91,20 @@
         </label>
 
         <button type="submit" id="habit-form-submit">登録</button>
-        <button type="button" id="habit-form-cancel" hidden>編集をキャンセル</button>
+        <button type="button" id="habit-form-cancel">キャンセル</button>
       </form>
       <p id="habit-form-error" role="alert"></p>
     </section>
 
-    <section>
-      <h2>習慣一覧</h2>
-      <label>
-        カテゴリで絞り込み
-        <select id="habit-category-filter">
-          <option value="">すべて</option>
-          <option value="uncategorized">未分類</option>
-          <option value="health">健康</option>
-          <option value="work">仕事</option>
-          <option value="study">学習</option>
-          <option value="other">その他</option>
-        </select>
-      </label>
-      <ul id="habit-list"></ul>
-      <p id="habit-list-empty" hidden>登録されている習慣がありません</p>
+    <section id="view-goal-list" hidden>
+      <h2>目標一覧</h2>
+      <button type="button" id="goal-list-new-button">新規登録</button>
+      <ul id="goal-list"></ul>
+      <p id="goal-list-empty" hidden>登録されている目標がありません</p>
     </section>
 
-    <section>
-      <h2>目標を設定</h2>
+    <section id="view-goal-form" hidden>
+      <h2 id="goal-form-heading">目標を設定</h2>
       <form id="goal-form">
         <label>
           対象の習慣
@@ -105,18 +127,12 @@
         </label>
 
         <button type="submit" id="goal-form-submit">設定</button>
-        <button type="button" id="goal-form-cancel" hidden>編集をキャンセル</button>
+        <button type="button" id="goal-form-cancel">キャンセル</button>
       </form>
       <p id="goal-form-error" role="alert"></p>
     </section>
 
-    <section>
-      <h2>目標一覧</h2>
-      <ul id="goal-list"></ul>
-      <p id="goal-list-empty" hidden>登録されている目標がありません</p>
-    </section>
-
-    <section>
+    <section id="view-dashboard" hidden>
       <h2>ダッシュボード</h2>
       <p id="dashboard-empty" hidden>表示できるデータがありません</p>
 
@@ -139,6 +155,6 @@
       <ul id="dashboard-goal-list"></ul>
     </section>
 
-    <script type="module" src="/js/habits.js"></script>
+    <script type="module" src="/js/app.js"></script>
   </body>
 </html>
